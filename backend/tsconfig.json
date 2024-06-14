@@ -4,6 +4,8 @@
         "moduleResolution": "NodeNext",
         "baseUrl":"./src",
         "outDir":"./dist",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
         "noImplicitAny": true
     },
     "include" : ["src/**/*"],
