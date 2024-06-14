@@ -1,6 +1,6 @@
 import Controller from "../../interfaces/controllers.interface";
 import {Router, Request, Response, NextFunction} from "express";
-
+import { sendEmail } from "../../helpers/mail/mail.helper";
 
 class PingController implements Controller{
 
@@ -14,8 +14,10 @@ class PingController implements Controller{
     initializeRoute(){
         this.router.get(`${this.path}`, this.ping)
     }
+    
 
-    private ping(req:Request, res:Response, next:NextFunction){
+    private async ping(req:Request, res:Response, next:NextFunction){
+
         res.status(200).json({message:"Ping successful"});
     }   
 }
