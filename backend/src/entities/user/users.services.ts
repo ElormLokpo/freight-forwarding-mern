@@ -22,6 +22,11 @@ export const findUserByEmail = async (email:string)=>{
     return user_query;
 }
 
+export const findUserByEmailSelect = async (email:string)=>{
+    const user_query = await UserModel.findOne({email}).select("+passwordHash");
+    return user_query;
+}
+
 export const addUser = async (data: CreateUserDto)=>{
     let user_with_email = findUserByEmail(data.email);
 
