@@ -4,7 +4,7 @@ import "dotenv/config"
 import PingController from "./entities/ping/ping.controller";
 
 const app = new App([
-    new UsersController()
+    new UsersController(),
     new PingController()
 ]);
 app.listen();

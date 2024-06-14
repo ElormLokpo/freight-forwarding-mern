@@ -12,7 +12,7 @@ class PingController implements Controller{
     }
 
     initializeRoute(){
-        this.router.get("/", this.ping)
+        this.router.get(`${this.path}`, this.ping)
     }
 
     private ping(req:Request, res:Response, next:NextFunction){
