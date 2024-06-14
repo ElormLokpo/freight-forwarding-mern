@@ -7,7 +7,7 @@ export const findAllUsers = async ()=>{
     return user_query;
 }
 
-export const findUserById = async (id:string)=>{
+export const findUserById = async (id:any)=>{
     const user_query = await UserModel.findById(id);
     return user_query;
 }
@@ -29,9 +29,9 @@ export const addUser = async (data: CreateUserDto)=>{
     //     return 
     // }
 
-    if(user_with_email){
-        return;
-    }
+    // if(user_with_email){
+    //     return;
+    // }
 
     const user_created = await UserModel.create(data);
     return user_created;

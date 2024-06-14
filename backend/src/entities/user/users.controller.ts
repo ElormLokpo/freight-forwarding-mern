@@ -8,92 +8,116 @@ class UsersController implements Controller{
 
     public path = "/users";
     public router = Router();
-    public UserModel = UserModel;
+  
 
     constructor(){
         this.intializeRoutes();
     }
 
-    intializeRoutes(){
-        this.router.get(`${this.path}/get/:id`, this.getUserById);
-        this.router.get(`${this.path}/get/:guid`, this.getUserByGuid);
-        this.router.get(`${this.path}/get/:all`, this.getAllUsers);
-        this.router.get(`${this.path}/get/:email`, this.getUserByEmail);
+    private intializeRoutes(){
+        this.router.get(`${this.path}/all`, this.getAllUsers);
         this.router.post(`${this.path}/add`, this.createUser);
-        this.router.patch(`${this.path}/update/:id`, this.updateUser);
-        this.router.patch(`${this.path}/update/guid/:guid`, this.updateUserByGuid);
-        this.router.delete(`${this.path}/delete/:id`, this.deleteUser);
-        this.router.delete(`${this.path}/delete/guid/:guid`, this.deleteUserByGuid);
+        this.router.get(`${this.path}/:id`, this.getUserById);
+        this.router.get(`${this.path}/guid/:guid`, this.getUserByGuid);
+        this.router.get(`${this.path}/email/:email`, this.getUserByEmail);
+        this.router.patch(`${this.path}/:id`, this.updateUser);
+        this.router.patch(`${this.path}/guid/:guid`, this.updateUserByGuid);
+        this.router.delete(`${this.path}/:id`, this.deleteUser);
+        this.router.delete(`${this.path}/guid/:guid`, this.deleteUserByGuid);
     }
 
     private async getAllUsers(req:Request, res:Response, next:NextFunction){
         const user_query = await findAllUsers();
        
-        res.status(200).json({user_query});
+        res.status(200).json({user_query}).end();
+        next();
     }
 
-    private async getUser(params:string, method:any){
-        const user_query = await method(params);
+ 
+
+    private async getUserById(req:Request, res:Response, next:NextFunction){
+        
+        const user_query = await findUserById(req.params.id);
         
         if (!user_query){
             return 
         }
-        return user_query;
-    }
-
-    private async getUserById(req:Request, res:Response, next:NextFunction){
-        
-        const user_query = await this.getUser(req.params.id,findUserById)
-        res.status(200).json({user_query});
+      
+        res.status(200).json({user_query}).end();
+        next();
     }
 
     private async getUserByEmail(req:Request, res:Response, next:NextFunction){
-        const user_query = await this.getUser(req.params.id,findUserByEmail)
+        const user_query = await findUserByEmail(req.params.email);
         
+        if (!user_query){
+            return 
+        }
+
         res.status(200).json({user_query});
     }
 
     private async getUserByGuid(req:Request, res:Response, next:NextFunction){
-        const user_query = await this.getUser(req.params.id,findUserByGuid)
-
+        
+        const user_query = await findUserByGuid(req.params.guid);
+        
+        if (!user_query){
+            return 
+        }
         res.status(200).json({user_query});
     }
 
     private async createUser(req:Request, res:Response, next:NextFunction){
         const user: CreateUserDto = req.body;
-        
+       
         const created_user = await addUser(user);
-        res.status(200).json({created_user});
+        res.status(200).json({message:"User created successfully", created_user});
 
     }
 
     private async updateUser(req:Request, res:Response, next:NextFunction){
-        const user_query = await this.getUser(req.params.id,findUserById)
+        const user_query = await findUserById(req.params.id);
         
-        const updated_user = await this.UserModel.findByIdAndUpdate(req.params.id, req.body, {new:true})
+        if (!user_query){
+            return 
+        }
+        const updated_user = await UserModel.findByIdAndUpdate(req.params.id, req.body, {new:true})
         res.status(200).json({updated_user});
     
     }
 
     private async updateUserByGuid(req:Request, res:Response, next:NextFunction){
-        const user_query = await this.getUser(req.params.id,findUserByGuid)
+        const user_query = await findUserByGuid(req.params.guid);
+        
+        if (!user_query){
+            return 
+        }
        
-        const updated_user = await this.UserModel.findByIdAndUpdate(user_query.id, req.body, {new:true})
+
+        const updated_user = await UserModel.findByIdAndUpdate(user_query._id, req.body, {new:true})
         res.status(200).json({updated_user});
     
     }
 
     private async deleteUser(req:Request, res:Response, next:NextFunction){
-        const user_query = await this.getUser(req.params.id,findUserById)
+        const user_query = await findUserById(req.params.id);
         
-        const updated_user = await this.UserModel.findByIdAndDelete(req.params.id, req.body)
+        if (!user_query){
+            return 
+        }
+
+        const updated_user = await UserModel.findByIdAndDelete(req.params.id, req.body)
         res.status(200).json({updated_user});
     }
 
     private async deleteUserByGuid(req:Request, res:Response, next:NextFunction){
-        const user_query = await this.getUser(req.params.id,findUserByGuid)
+        const user_query = await findUserByGuid(req.params.guid);
         
-        const updated_user = await this.UserModel.findByIdAndDelete(user_query.id ,req.body)
+        if (!user_query){
+            return 
+        }
+
+        const updated_user = await UserModel.findByIdAndDelete(user_query._id ,req.body)
         res.status(200).json({updated_user});
     }
 }
