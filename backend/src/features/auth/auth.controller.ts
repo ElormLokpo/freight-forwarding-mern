@@ -2,6 +2,7 @@ import { NextFunction, Router, Request, Response } from "express";
 import Controller from "../../interfaces/controllers.interface";
 import { findUserByEmailSelect } from "../../entities/user/users.services";
 import bcrypt from "bcrypt";
+import { createCookie, createToken } from "./auth.helpers";
 
 class AuthController implements Controller{
     public path = "/auth"
@@ -22,13 +23,14 @@ class AuthController implements Controller{
             return 
         }
 
-        
-
         const valid_password = await bcrypt.compare(password, user_query.passwordHash);
         if (!valid_password){
             return
         }
 
+        const token = createToken(user_query.guid);
+
+        res.setHeader("Set-Cookie",[createCookie(token)]);
         res.status(200).json({
             message: "Login successful"
         })
