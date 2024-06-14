@@ -1,14 +1,16 @@
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import express from "express";
+import Controller from "./interfaces/controllers.interface";
 import mongoose from "mongoose";
 
 class App{
     public app:express.Application;
 
-    constructor(){
+    constructor(controllers:Controller[]){
         this.app = express();
         this.initializeMiddleware();
+        this.initializeControllers(controllers);
         this.connectDatabase();
     }
 
@@ -19,6 +21,12 @@ class App{
         })
     }
 
+    private initializeControllers(controllers: Controller[]){
+        controllers.forEach((controller)=>{
+            this.app.use("/", controller.router)
+        });
+    }
+
     private initializeMiddleware(){
         this.app.use(bodyParser.json());
         this.app.use(cookieParser());
@@ -26,7 +34,7 @@ class App{
 
     private connectDatabase(){
         mongoose.Promise = Promise;
-        mongoose.connect("");
+        mongoose.connect(process.env.MONGO_URL);
         mongoose.connection.on("error",(error:Error)=>console.log(error));
         console.log("Database Connected");
     }
