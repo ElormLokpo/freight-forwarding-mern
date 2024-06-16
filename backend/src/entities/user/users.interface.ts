@@ -12,6 +12,14 @@ interface UserInterface{
     role:{
         role:string, 
         section:string
+    },
+    verify_email:{
+        email_verfied: boolean,
+        verification_code: number
+    },
+    account_recovery:{
+        recovery_code:number, 
+        recovery_code_verified:boolean
     }
 
 

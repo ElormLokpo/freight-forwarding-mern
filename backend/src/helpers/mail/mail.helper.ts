@@ -20,7 +20,6 @@ export const sendEmail = async (receipient:string, subject:string, content:strin
         from: 'benedictdev31@gmail.com', 
         to: receipient, 
         subject: subject, 
-        // text: "Hello world?", 
         html: template, 
       });
 }
