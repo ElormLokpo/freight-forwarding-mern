@@ -1,10 +1,5 @@
 export function generateCode() {
-    let numbers = new Set();
-    while (numbers.size < 6) {
-        let randomNumber = Math.floor(Math.random() * 1000000);
-        if (randomNumber.toString().length === 6) {
-            numbers.add(randomNumber);
-        }
-    }
-    return Array.from(numbers);
+    let min = 100000;
+    let max = 999999;
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }

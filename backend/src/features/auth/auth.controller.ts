@@ -59,6 +59,11 @@ class AuthController implements Controller{
             return 
         }
 
+        if(user_query.verify_email.email_verfied===false){
+            res.status(200).json({message:"Kindly verify email"});
+            next();
+        }
+
         const valid_password = await bcrypt.compare(password, user_query.passwordHash);
         if (!valid_password){
             return
@@ -79,10 +84,10 @@ class AuthController implements Controller{
         const code_from_request = req.body.code;
         const user_guid = req.body.guid;
 
-        const user_query = await findUserByGuid(user_guid)
+       
+        const user_query = await UserModel.findOne({guid:user_guid}).select("verify_email.verification_code");
 
-
-        if (code_from_request === user_query.verify_email.verification_code){
+        if (code_from_request == user_query.verify_email.verification_code){
             const update_data = {
                 verify_email:{
                     email_verified:true
@@ -107,7 +112,9 @@ class AuthController implements Controller{
 
         sendEmail(user_email, "Email Verification Code",`${code_generated}`, "Kindly enter the code provided to verify accout" );
 
-        const user_query = await findUserByGuid(user_guid)
+       
+        const user_query = await UserModel.findOne({guid:user_guid}).select("account_recovery.recovery_code");
+
         const update_data = {
             account_recovery:{
                 recovery_code: code_generated
@@ -126,7 +133,8 @@ class AuthController implements Controller{
         const code_from_request = req.body.code;
         const user_guid = req.body.guid;
         
-        const user_query = await findUserByGuid(user_guid)
+        const user_query = await UserModel.findOne({guid:user_guid}).select("account_recovery.recovery_code");
+
         
         if(code_from_request === user_query.account_recovery.recovery_code){
             const update_data = {
@@ -147,15 +155,21 @@ class AuthController implements Controller{
     }
 
     private async changePassword(req:Request, res:Response, next:NextFunction){
+       
         const new_password = req.body.password;
         const user_guid = req.body.guid;
-        const user_query = await findUserByGuid(user_guid)
+
+        const user_query = await UserModel.findOne({guid:user_guid}).select("account_recovery.recovery_code_verified");
+    
 
         if(user_query.account_recovery.recovery_code_verified === true){
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword= await bcrypt.hash(new_password, salt)
+
             const update_data = {
-                passwordHash : new_password,
+                passwordHash : hashedPassword,
                 account_recovery :{
-                    recovery_code:111111,
+                   
                     recovery_code_verified: false
 
                 }
