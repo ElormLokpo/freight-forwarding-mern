@@ -1,0 +1,13 @@
+{
+    "compilerOptions":{
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "baseUrl":"./src",
+        "outDir":"./dist",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "noImplicitAny": true
+    },
+    "include" : ["src/**/*"],
+    "exclude" : ["dist", "node_modules"]
+}
