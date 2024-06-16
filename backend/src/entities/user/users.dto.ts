@@ -1,4 +1,4 @@
-import {IsString, IsOptional, ValidateNested} from "class-validator";
+import {IsString, IsOptional, ValidateNested, IsBoolean, IsInt} from "class-validator";
 
 class AddressDto{
     @IsString()
@@ -14,6 +14,26 @@ class RoleDto{
 
     @IsString()
     public section:string
+}
+
+class VerifyEmailDto{
+    @IsOptional()
+    @IsBoolean()
+    public email_verified: boolean;
+
+    @IsOptional()
+    @IsInt()
+    public verfication_code: number;
+}
+
+class AccountRecoveryDto{
+    @IsOptional()
+    @IsInt()
+    public recovery_code:number
+
+    @IsOptional()
+    @IsBoolean()
+    public recovery_code_verified:boolean
 }
 
 export class CreateUserDto{
@@ -39,5 +59,14 @@ export class CreateUserDto{
 
     @ValidateNested()
     public role: RoleDto
+
+    @IsOptional()
+    @ValidateNested()
+    public verify_email: VerifyEmailDto
+
+    @IsOptional()
+    @ValidateNested()
+    public account_recovery: AccountRecoveryDto
+
 }
 

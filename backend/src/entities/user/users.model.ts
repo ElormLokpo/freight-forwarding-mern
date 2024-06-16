@@ -54,6 +54,29 @@ const userSchema = new mongoose.Schema({
         select:false,
         
     },
+    verify_email:{
+        email_verified:{
+            type:Boolean, 
+            default: false
+        },
+        verification_code:{
+            type:Number,
+            select:false
+        }
+    },
+    account_recovery:{
+        recovery_code:{
+            type:Number,
+            select:false
+            
+        },
+        recovery_code_verified:{
+            type:Boolean, 
+            default: false,
+            select:false
+        },
+    },
+   
     role: roleSchema
     
 },{timestamps:true})
