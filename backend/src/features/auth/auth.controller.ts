@@ -175,7 +175,7 @@ class AuthController implements Controller{
                 }
             }
             const updated_user = await UserModel.findByIdAndUpdate(user_query._id, update_data, {new:true})
-            res.status(200).json({message:"Password change successful"})
+            res.status(200).json({message:"Password change successful!"})
             
         }else{
             res.status(200).json({message:"Unverified recovery codes"})
