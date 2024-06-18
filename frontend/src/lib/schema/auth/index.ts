@@ -15,13 +15,14 @@ export const AuthSignUpSchema = z.object({
     email: z.string({required_error:"Email required"}).email({message:"Enter valid email"}),
     address: AddressSchema,
     password:  z.string({required_error:"Password required"}).min(6, "Password should be at least 6 characters"),
+    confirmPassword:  z.string()
+
    
     })
     
 
 export const AuthSignInSchema = z.object({
-    email: z.string({required_error:"Email required"}).email({message:"Enter valid email"}),
-  
+    email: z.string().email({message:"Enter valid email"}),
     password:  z.string()
     
 })
