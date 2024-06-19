@@ -1,10 +1,10 @@
 import React from 'react'
-import { motion } from "framer-motion";
+
 import { slideInTop } from '@/assets/animations/variants';
 import { Form, FormItem, FormLabel, FormControl, FormField } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { AuthSignUpSchema, AuthSignUpType } from '@/lib';
-import { zodResolver } from '@hookform/resolvers/zod';
+
 import { Input } from '@/components/ui/input';
 import PButton from '@/components/button';
 
@@ -34,12 +34,7 @@ const SignUpForm = () => {
   }
 
   return (
-    <motion.div
-      variants={slideInTop}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      transition={{ duration: 0.5, delay: 0.5 }}
+    <div
 
 
       className='bg-white rounded p-5 w-3/12'
@@ -182,7 +177,7 @@ const SignUpForm = () => {
       </Form>
 
 
-    </motion.div>
+    </div>
   )
 }
 
