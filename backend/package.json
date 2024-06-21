@@ -10,6 +10,7 @@
   "author": "Elorm Lokpo",
   "license": "ISC",
   "dependencies": {
+    "@types/cors": "^2.8.17",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "class-transformer": "^0.5.1",

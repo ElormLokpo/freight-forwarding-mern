@@ -4,6 +4,7 @@ import { slideInTop } from '@/assets/animations/variants';
 import { Form, FormItem, FormLabel, FormControl, FormField } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { AuthSignUpSchema, AuthSignUpType } from '@/lib';
+import axios from "axios";
 
 import { Input } from '@/components/ui/input';
 import PButton from '@/components/button';
@@ -30,6 +31,10 @@ const SignUpForm = () => {
   //   })
 
   const onSumbit = (data: AuthSignUpType) => {
+    axios.get("http://localhost:5000/ping")
+    .then((res)=>{
+        console.log(res);
+    })
     console.log(data)
   }
 

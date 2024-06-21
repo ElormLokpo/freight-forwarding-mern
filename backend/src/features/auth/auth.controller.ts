@@ -34,7 +34,7 @@ class AuthController implements Controller{
         const code_generated = generateCode();
 
 
-        sendEmail(req.body.email, "Email Verification Code",`${code_generated}`, "Kindly enter the code provided to verify accout" );
+        //sendEmail(req.body.email, "Email Verification Code",`${code_generated}`, "Kindly enter the code provided to verify accout" );
 
         const create_user_object = {
             ...req.body, 
@@ -59,10 +59,11 @@ class AuthController implements Controller{
             return 
         }
 
-        if(user_query.verify_email.email_verfied===false){
-            res.status(200).json({message:"Kindly verify email"});
-            next();
-        }
+        
+        // if(user_query.verify_email.email_verfied===false){
+        //     res.status(200).json({message:"Kindly verify email"});
+        //     next();
+        // }
 
         const valid_password = await bcrypt.compare(password, user_query.passwordHash);
         if (!valid_password){
