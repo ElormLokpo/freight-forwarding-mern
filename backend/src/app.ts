@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 import express from "express";
 import Controller from "./interfaces/controllers.interface";
 import mongoose from "mongoose";
+import cors from "cors";
 
 class App{
     public app:express.Application;
@@ -30,6 +31,7 @@ class App{
     private initializeMiddleware(){
         this.app.use(bodyParser.json());
         this.app.use(cookieParser());
+        this.app.use(cors());
     }
 
     private connectDatabase(){

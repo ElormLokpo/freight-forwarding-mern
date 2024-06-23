@@ -1,12 +1,9 @@
-import React from 'react'
-
-import { slideInTop } from '@/assets/animations/variants';
 import { Form, FormItem, FormLabel, FormControl, FormField } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
-import { AuthSignUpSchema, AuthSignUpType } from '@/lib';
-
+import { AuthSignUpType } from '@/lib';
 import { Input } from '@/components/ui/input';
 import PButton from '@/components/button';
+import { usePingServerQuery } from '@/services/api/auth';
 
 const SignUpForm = () => {
 
@@ -30,15 +27,14 @@ const SignUpForm = () => {
   //   })
 
   const onSumbit = (data: AuthSignUpType) => {
-    console.log(data)
+  
+
   }
 
   return (
     <div
-
-
-      className='bg-white rounded p-5 w-3/12'
-    >
+      className='bg-white rounded p-5 w-3/12'>
+        
       <Form {...signUpSchemaValidator}>
         <form onSubmit={signUpSchemaValidator.handleSubmit(onSumbit)}>
           <div className='grid grid-cols-2 gap-2 mb-2'>
