@@ -44,7 +44,9 @@ class AuthController implements Controller{
         }
 
         const created_user = await addUser(create_user_object);
+        const token = createToken(created_user.guid);
 
+        res.setHeader("Set-Cookie", [createCookie(token)]);
         res.status(200).json({
             message:"User registered successfully",
             created_user
