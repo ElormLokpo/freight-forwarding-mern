@@ -2,10 +2,11 @@ import { NextFunction, Router, Request, Response } from "express";
 import Controller from "../../interfaces/controllers.interface";
 import { findUserByEmailSelect,findUserByGuid, addUser } from "../../entities/user/users.services";
 import bcrypt from "bcrypt";
-import { createCookie, createToken } from "./auth.helpers";
+import { createCookie, createRefreshToken, createToken } from "./auth.helpers";
 import { generateCode } from "../../helpers/code-gen/code.generation";
 import { sendEmail } from "../../helpers/mail/mail.helper";
 import { UserModel } from "../../entities/user/users.model";
+import jwt from 'jsonwebtoken';
 
 class AuthController implements Controller{
     public path = "/auth"
@@ -22,7 +23,7 @@ class AuthController implements Controller{
         this.router.post(`${this.path}/forgot-password`, this.forgotPassword)
         this.router.post(`${this.path}/recovery-code/verify`, this.accountRecoveryCodeVerification)
         this.router.post(`${this.path}/change-password`, this.changePassword)
-
+        this.router.post(`${this.path}/refresh-token`, this.refreshToken)
 
 
 
@@ -45,11 +46,13 @@ class AuthController implements Controller{
 
         const created_user = await addUser(create_user_object);
         const token = createToken(created_user.guid);
+        const refreshToken = createRefreshToken(created_user.guid);
+
 
         res.setHeader("Set-Cookie", [createCookie(token)]);
         res.status(200).json({
-            message:"User registered successfully",
-            created_user
+            access_token: token, 
+            refresh_token: refreshToken
         })
         next()
     }
@@ -73,13 +76,31 @@ class AuthController implements Controller{
         }
 
         const token = createToken(user_query.guid);
+        const refreshToken = createRefreshToken(user_query.guid);
 
-        res.setHeader("Set-Cookie",[createCookie(token)]);
+        //res.setHeader("Set-Cookie",[createCookie(token)]);
+
         res.status(200).json({
-            message: "Login successful"
+            access_token: token, 
+            refresh_token:refreshToken
         })
         next()
 
+
+    }
+
+    private async refreshToken(req:Request, res:Response, next:NextFunction){
+        const token = req.body.token;
+
+        jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err:any, data:any)=>{
+            if (err){
+                console.log(err)
+            }
+
+            res.status(200).json({
+                access_token : createToken(data.id)
+            })
+        })
 
     }
 
