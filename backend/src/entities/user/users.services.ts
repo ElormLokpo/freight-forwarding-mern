@@ -1,5 +1,6 @@
 import { UserModel } from "./users.model"
 import { CreateUserDto } from "./users.dto";
+import { RegisterRequestBody } from "types";
 
 
 export const findAllUsers = async ()=>{
@@ -27,8 +28,8 @@ export const findUserByEmailSelect = async (email:string)=>{
     return user_query;
 }
 
-export const addUser = async (data: CreateUserDto)=>{
-    let user_with_email = findUserByEmail(data.email);
+export const addUser = async (data: RegisterRequestBody):Promise<any> =>{
+    let user_with_email = await findUserByEmail(data.email);
 
     // if(data.role.role == "admin" || data.role.role=="Admin" || data.role.role=="ADMIN"){
     //     return 
@@ -37,6 +38,9 @@ export const addUser = async (data: CreateUserDto)=>{
     // if(user_with_email){
     //     return;
     // }
+    if (user_with_email){
+        return "User Exists"
+    }
 
     const user_created = await UserModel.create(data);
     return user_created;

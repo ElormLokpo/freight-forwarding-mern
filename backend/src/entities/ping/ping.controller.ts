@@ -1,6 +1,6 @@
 import Controller from "../../interfaces/controllers.interface";
 import {Router, Request, Response, NextFunction} from "express";
-import { sendEmail } from "../../helpers/mail/mail.helper";
+
 
 class PingController implements Controller{
 
