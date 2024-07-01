@@ -5,7 +5,8 @@ export function errorHandlerMiddleware(err: HttpException, req:Request, res:Resp
     let status = err.status || 500;
     let message = err.message || "Internal Server Error"
 
-    res.status(status).json({
+    res.status(200).json({
+        status,
         message
     })
     next()
