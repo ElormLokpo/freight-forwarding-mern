@@ -1,39 +1,51 @@
 import { Form, FormItem, FormLabel, FormControl, FormField } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
-import { AuthSignUpType } from '@/lib';
+import { AuthSignUpType, AuthSignUpSchema } from '@/lib';
 import { Input } from '@/components/ui/input';
 import PButton from '@/components/button';
-import { usePingServerQuery } from '@/services/api/auth';
+import { useRegisterMutation } from '@/services/api/auth';
+import {motion as m} from "framer-motion"
+import { slideInTop } from '@/animations';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 const SignUpForm = () => {
+  const [register, {isLoading}] = useRegisterMutation()
 
-  const signUpSchemaValidator = useForm<AuthSignUpType>({
+ 
+    const signUpSchemaValidator = useForm<AuthSignUpType>({
+      resolver: zodResolver(AuthSignUpSchema),
+      defaultValues:{
+        firstname:"",
+        othernames:"",
+        lastname:"",
+        email:"",
+        address:{
+          city:"",
+          country:""
+        },
+        passwordHash:""
 
-  });
-  //   const registerFormSchemaValidator = useForm<AuthRegisterType>({
-  //     resolver: zodResolver(AuthRegisterSchema),
-  //     defaultValues:{
-  //       firstname:"",
-  //       othernames:"",
-  //       lastname:"",
-  //       email:"",
-  //       address:{
-  //         city:"",
-  //         country:""
-  //       },
-  //       password:""
+      }
+    })
 
-  //     }
-  //   })
+  const onSumbit = async (data: AuthSignUpType) => {
+        let res = await register(data);
+        console.log(res);
 
-  const onSumbit = (data: AuthSignUpType) => {
-  
+        
 
   }
 
   return (
-    <div
-      className='bg-white rounded p-5 w-3/12'>
+    <m.div
+      variants={slideInTop}
+      initial = "initial"
+      animate = "animate"
+      exit = "exit"
+      transition ={{duration:0.7, delay:0.8}}
+
+
+      className='bg-white rounded p-5 sm:w-5/12 md:w-3/12 lg:w-3/12'>
         
       <Form {...signUpSchemaValidator}>
         <form onSubmit={signUpSchemaValidator.handleSubmit(onSumbit)}>
@@ -133,7 +145,7 @@ const SignUpForm = () => {
 
           <div className='mb-2'>
             <FormField
-              name="password"
+              name="passwordHash"
               control={signUpSchemaValidator.control}
               render={({ field }) => (
                 <FormItem>
@@ -173,7 +185,7 @@ const SignUpForm = () => {
       </Form>
 
 
-    </div>
+    </m.div>
   )
 }
 

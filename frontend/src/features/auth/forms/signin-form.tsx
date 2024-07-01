@@ -1,41 +1,41 @@
-import React from 'react'
-import { slideInTop } from '@/assets/animations/variants';
 import { Form, FormItem, FormLabel, FormControl, FormField } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { AuthSignInSchema, AuthSignInType } from '@/lib';
-
+import {motion as m} from "framer-motion";
+import {zodResolver} from "@hookform/resolvers/zod"
 import { Input } from '@/components/ui/input';
 import PButton from '@/components/button';
+import { useLoginMutation } from '@/services/api/auth';
+import { slideInTop } from '@/animations';
 
 const SignInForm = () => {
+  const [login, {isLoading}] = useLoginMutation();
 
   const signInSchemaValidator = useForm<AuthSignInType>({
-       
+      resolver: zodResolver(AuthSignInSchema),
+      defaultValues:{
+        email:"",
+        password:""
+      }
   });
-  //   const registerFormSchemaValidator = useForm<AuthRegisterType>({
-  //     resolver: zodResolver(AuthRegisterSchema),
-  //     defaultValues:{
-  //       firstname:"",
-  //       othernames:"",
-  //       lastname:"",
-  //       email:"",
-  //       address:{
-  //         city:"",
-  //         country:""
-  //       },
-  //       password:""
+  
+  
 
-  //     }
-  //   })
-
-  const onSumbit = (data: AuthSignInType) => {
-    console.log(data)
+  const onSumbit = async (data: AuthSignInType) => {
+    let res = await login(data);
+    
+    
   }
 
   return (
-    <div
+    <m.div
+      variants={slideInTop}
+      initial = "initial"
+      animate = "animate"
+      exit = "exit"
+      transition ={{duration:0.7, delay:0.8}}
 
-      className='bg-white rounded p-5 auth-container-width'
+      className='bg-white rounded p-5 sm:w-4/12 md:w-3/12 lg:w-3/12'
     >
       <Form {...signInSchemaValidator}>
         <form onSubmit={signInSchemaValidator.handleSubmit(onSumbit)}>
@@ -83,7 +83,7 @@ const SignInForm = () => {
       </Form>
 
 
-    </div>
+    </m.div>
   )
 }
 

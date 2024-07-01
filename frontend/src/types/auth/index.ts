@@ -1,8 +1,6 @@
-import { TokenType, UserType } from "./user"
 
-export type AuthInitialStateType = {
-    user: UserType | null,
-    access_token: TokenType | null
+
+export type AuthResponseType = {
+    access_token: string, 
+    refresh_token:string
 }
-
-export * from "./user"

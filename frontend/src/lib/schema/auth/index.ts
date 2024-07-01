@@ -14,7 +14,7 @@ export const AuthSignUpSchema = z.object({
     lastname: z.string({required_error:"Lastname required"}),
     email: z.string({required_error:"Email required"}).email({message:"Enter valid email"}),
     address: AddressSchema,
-    password:  z.string({required_error:"Password required"}).min(6, "Password should be at least 6 characters"),
+    passwordHash:  z.string({required_error:"Password required"}).min(6, "Password should be at least 6 characters"),
     confirmPassword:  z.string()
 
    

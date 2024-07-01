@@ -1,24 +1,56 @@
 import { baseUrl } from "@/constants";
-import { AuthSignUpType } from "@/lib";
-import { ApiResponseType, UserType } from "@/types";
-import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
+import { AuthSignInType, AuthSignUpType } from "@/lib";
+import { storeToken } from "@/redux/slices/auth";
+import { ApiErrorResponseType, ApiResponseType, AuthResponseType } from "@/types";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export const authApi = createApi({
-  reducerPath: "authApi",
-  baseQuery: fetchBaseQuery({baseUrl}),
+
+
+
+const authApi = createApi({
+  reducerPath:"authApi",
+  baseQuery: fetchBaseQuery({baseUrl: baseUrl}),
   endpoints: (builder)=>({
-      login: builder.mutation<AuthSignUpType, ApiResponseType<UserType>>({
-        queryFn: async (arg, {dispatch}, _extraOptions, baseQuery)=>{
-            const res = await baseQuery({
-              url: "auth/registers",
-              method: "POST",
-              body: arg
-            })
+    register: builder.mutation<ApiResponseType<AuthResponseType>, AuthSignUpType>({
+      queryFn: async (arg, { dispatch }, _extraOptions, baseQuery)=>{
+          let res = await baseQuery({
+            url: "auth/register",
+            method: "POST",
+            body: arg
+          });
 
+          if(res.data){
+              let tokens = res.data;
+              dispatch(storeToken(tokens));
+          } 
+
+          return res as {data: ApiResponseType<AuthResponseType>};
+
+      }
+    }),
+    login: builder.mutation<ApiResponseType<AuthResponseType>, AuthSignInType>({
+      queryFn: async (arg, {dispatch}, _extraOptions, baseQuery)=>{
+          let res = await baseQuery({
+            url: "auth/login",
+            method: "POST",
+            body: arg
+          })
+
+          if (res.data){
+            let tokens = res.data 
+            dispatch(storeToken(tokens));
             
+          }
+          if(res.error){
             
-        }
-      })
+          }
+
+          return res as {data: ApiResponseType<AuthResponseType>}
+      }
+    })
   })
-
 })
+
+export default authApi;
+
+export const {useRegisterMutation, useLoginMutation} = authApi;
