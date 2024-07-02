@@ -4,8 +4,12 @@ import bcrypt from "bcrypt";
 
 
 const WarehouseStaffSchema = new mongoose.Schema({
+    guid:{
+        type:String, 
+        required:true
+    },
     staff_id:{
-        type:String,
+        type:Number,
         required: true
     }, 
     fullname: {
@@ -22,7 +26,8 @@ const WarehouseStaffSchema = new mongoose.Schema({
     },  
     password:{
         type:String,
-        required: true
+        required: true,
+        select: false
     },  
     role: {
         type:String,
@@ -31,7 +36,8 @@ const WarehouseStaffSchema = new mongoose.Schema({
 },{timestamps:true})
 
 WarehouseStaffSchema.pre("save", async function(){
-    this.staff_id = v4();
+    this.guid = v4();
+    this.staff_id = Math.floor(100000 + Math.random() * 900000);
     
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);

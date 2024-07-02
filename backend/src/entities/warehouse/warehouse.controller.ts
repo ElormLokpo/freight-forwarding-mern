@@ -30,7 +30,7 @@ class WarehouseController implements Controller{
         res.status(200).json({
             warehouse_mutation
         })
-    }
+    } 
 
     private getAllWarehouses(req:Request, res: Response, next:NextFunction){
         const warehouse_query =  getAllWarehouses();
