@@ -3,7 +3,7 @@ import Controller from "../../../interfaces/controllers.interface";
 import {addWarehouseStaff, getWarehouseStaff, updateWarehouseStaff, deleteWarehouseStaff, getWarehouseStaffId} from "./warehouse.staff.service"
 import {getAllWarehouseStaff} from "../warehouse.service";
 import bcrypt from "bcrypt";
-
+import { createToken } from "../../../helpers/token-gen/token-gen";
 
 class WarehouseStaffController implements Controller{
     public path = "/warehouse-staff";
@@ -14,6 +14,11 @@ class WarehouseStaffController implements Controller{
     }
 
     private initializeRoutes(){
+            this.router.get(`${this.path}/all`, this.getAllWarehouseStaff);
+            this.router.get(`${this.path}/guid`, this.getWarehouseStaff);
+            this.router.post(`${this.path}/add`, this.addWarehouseStaff);
+            this.router.get(`${this.path}/login`, this.loginWarehouseStaff);
+     
 
     }
 
@@ -48,9 +53,17 @@ class WarehouseStaffController implements Controller{
 
         const valid_password = bcrypt.compare(password, warehouse_staff_query.password);
 
-        
+        if(valid_password){
+            const access_token = createToken(warehouse_staff_query.guid);
+
+            if (access_token){
+                res.status(200).json({access_token})
+            }
+        }
 
     }
 
 
 }
+
+export default WarehouseStaffController;

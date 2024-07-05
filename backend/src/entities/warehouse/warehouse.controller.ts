@@ -14,12 +14,12 @@ class WarehouseController implements Controller{
 
     private initializeRoutes(){
         this.router.get(`${this.path}/all`, this.getAllWarehouses);
-        this.router.get(`${this.path}/add`, this.addWarehouse);
+        this.router.post(`${this.path}/add`, this.addWarehouse);
         this.router.get(`${this.path}/guid`, this.getWarehouse);
         this.router.get(`${this.path}/freight-company`, this.getWarehouseByFreightCompany);
         this.router.get(`${this.path}/vacant`, this.warehouseVacant);
-        this.router.get(`${this.path}/guid/update`, this.updateWarehouse);
-        this.router.get(`${this.path}/guid/delete`, this.deleteWarehouse);
+        this.router.patch(`${this.path}/guid/update`, this.updateWarehouse);
+        this.router.delete(`${this.path}/guid/delete`, this.deleteWarehouse);
         
 
 
