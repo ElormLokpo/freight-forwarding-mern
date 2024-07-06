@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import {v4} from "uuid";
 import { NextFunction } from "express";
 import bcrypt from "bcrypt";
-import UserInterface from "./users.interface";
+import { UserInterface } from "./users.types";
 
 const addressSchema =  new mongoose.Schema({
     country: {
@@ -11,6 +11,8 @@ const addressSchema =  new mongoose.Schema({
         default: "Ghana"
     },
     city:{type:String},
+},{
+    _id: false
 });
 
 const roleSchema = new mongoose.Schema({
@@ -22,13 +24,13 @@ const roleSchema = new mongoose.Schema({
         type:String, 
         
     }
+},{
+    _id:false
 })
 
 const userSchema = new mongoose.Schema({
-    guid:{
-        type: String, 
-        default: v4, 
-        unique: true
+    _id:{
+        type: String,     
     },
     firstname: {
         type:String, 
@@ -88,9 +90,9 @@ userSchema.virtual("fullname").get(function(){
 userSchema.pre("save", async function(next: NextFunction){
     const user = this;
 
-    if(!user.guid){
-        user.guid = v4();
-    }
+    
+    user._id = v4();
+    
 
     if (user.isModified("passwordHash")){
         const salt = await bcrypt.genSalt(10);

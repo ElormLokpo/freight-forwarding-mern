@@ -1,7 +1,7 @@
-import { WarehouseStaff } from "../../../types"
+
 import { WarehouseStaffModel } from "./warehouse.staff.model";
 
-export const addWarehouseStaff = async (warehouseStaff:WarehouseStaff)=>{
+export const addWarehouseStaff = async (warehouseStaff:any)=>{
     return await WarehouseStaffModel.create(warehouseStaff);
 }
 
