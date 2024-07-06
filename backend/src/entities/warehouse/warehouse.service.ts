@@ -1,8 +1,8 @@
 import { NextFunction } from "express"
 import { WarehouseModel } from "./warehouse.model"
-import { Warehouse } from "../../types"
+import { IWarehouse } from "./warehouse.types";
 
-export const addWarehouse = async (warehouse:Warehouse)=>{
+export const addWarehouse = async (warehouse:IWarehouse)=>{
     return await WarehouseModel.create(warehouse);
 }
 

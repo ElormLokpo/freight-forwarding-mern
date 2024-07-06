@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
 
-export const createToken = (guid:string)=>{
+export const createToken = (id:string)=>{
     const expiresIn= 60*60;
     const payload = {
-        id: guid
+        id
     }
     const secret = process.env.TOKEN_SECRET
     const token = jwt.sign(payload,secret, {expiresIn});
@@ -11,11 +11,11 @@ export const createToken = (guid:string)=>{
     
 }
 
-export const createRefreshToken = (guid:string)=>{
+export const createRefreshToken = (id:string)=>{
     const expiresIn  = 60*60; 
     const tokenSecret = process.env.REFRESH_TOKEN_SECRET;
     let payload = {
-        id: guid
+        id
     }
 
     return jwt.sign(payload, tokenSecret, {expiresIn})

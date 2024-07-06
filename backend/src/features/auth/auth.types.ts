@@ -21,3 +21,23 @@ export interface LoginRequestBody{
     password: string,
 }
 
+export interface AuthResponseDataType{
+    id: string,
+    access_token: string, 
+    refresh_token: string
+}
+
+export interface VerifyEmailRequestType{
+    code: string, 
+    id: string
+}
+
+export interface ForgotPasswordRequestType{
+    email: string, 
+    id: string
+}
+
+export interface ChangePasswordRequestType{
+    password: string, 
+    id: string
+}

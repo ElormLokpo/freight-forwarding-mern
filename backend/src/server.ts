@@ -11,8 +11,8 @@ const app = new App([
     new AuthController(),
     new UsersController(),
     new PingController(),
-    new WarehouseController(),
-    new WarehouseStaffController(),
-    new FreightCompanyController()
+    // new WarehouseController(),
+    // new WarehouseStaffController(),
+    // new FreightCompanyController()
 ]);
 app.listen();
