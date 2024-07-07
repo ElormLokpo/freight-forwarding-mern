@@ -1,6 +1,9 @@
 import Controller from "../../interfaces/controllers.interface";
 import { NextFunction, Request, Response, Router } from "express";
-import { addWarehouse, deleteWarehouse, getAllWarehouses, getWarehouseByFreightCompany, updateWarehouse, warehouseVacant } from "./warehouse.service";
+import { RequestType, ResponseType } from "../../types";
+import { WarehouseInterface, UpdateWarehouseRequestType } from "./warehouse.types";
+import { getAllWarehouses, getWarehouse, addWarehouse, getWarehouseByName } from "./warehouse.service";
+import { WarehouseModel } from "./warehouse.model";
 
 
 
@@ -14,71 +17,100 @@ class WarehouseController implements Controller{
 
     private initializeRoutes(){
         this.router.get(`${this.path}/all`, this.getAllWarehouses);
-        this.router.post(`${this.path}/add`, this.addWarehouse);
-        this.router.get(`${this.path}/guid`, this.getWarehouse);
-        this.router.get(`${this.path}/freight-company`, this.getWarehouseByFreightCompany);
-        this.router.get(`${this.path}/vacant`, this.warehouseVacant);
-        this.router.patch(`${this.path}/guid/update`, this.updateWarehouse);
-        this.router.delete(`${this.path}/guid/delete`, this.deleteWarehouse);
+        this.router.post(`${this.path}`, this.addWarehouse)
+        this.router.get(`${this.path}/id`, this.getWarehouse);
+        this.router.get(`${this.path}/name`, this.getWarehouseByName);
+        this.router.patch(`${this.path}`, this.updateWarehouse);
+        this.router.delete(`${this.path}`, this.deleteWarehouse);
+       }
+
+       private async getAllWarehouses(req:RequestType<{}>, res: Response, next:NextFunction){
+        const warehouse_query:WarehouseInterface[] = await getAllWarehouses();
+
+        const response:ResponseType<WarehouseInterface[]>  =
+        {
+            success:true, 
+            message:"Freight company query successful",
+            data: warehouse_query
+        } 
+        res.status(200).json(response);
+        
+    }
+
+    private async getWarehouse(req:RequestType<string>, res: Response, next:NextFunction){
+        const warehouse_query:WarehouseInterface = await getWarehouse(req.body.payload);
+
+        const response:ResponseType<WarehouseInterface>  =
+        {
+            success:true, 
+            message:"Freight company query successful",
+            data: warehouse_query
+        } 
+        res.status(200).json(response);
+        
+    }
+
+    private async getWarehouseByName(req:RequestType<string>, res: Response, next:NextFunction){
+        const warehouse_query:WarehouseInterface = await getWarehouseByName(req.body.payload);
+
+        const response:ResponseType<WarehouseInterface>  =
+        {
+            success:true, 
+            message:"Freight company query successful",
+            data: warehouse_query
+        } 
+        res.status(200).json(response);
+        
+    }
+
+    private async addWarehouse(req: RequestType<WarehouseInterface>, res: Response, next:NextFunction){
+        const warehouse_mutation:WarehouseInterface = await addWarehouse(req.body);
+
+
+        const response:ResponseType<WarehouseInterface>  =
+        {
+            success:true, 
+            message:"Freight company created successfully",
+            data: warehouse_mutation
+        } 
+
+        res.status(200).json(response)
+        
+    }
+
+    private async updateWarehouse(req: RequestType<UpdateWarehouseRequestType>, res: Response, next:NextFunction){
+        const update_data = req.body.payload.data;
+        const warehouse_mutation:WarehouseInterface = await WarehouseModel.findByIdAndUpdate(req.body.payload.id, update_data, {new:true})
         
 
+        const response:ResponseType<WarehouseInterface>  =
+        {
+            success:true, 
+            message:"Freight company update successful",
+            data: warehouse_mutation
+        } 
 
-    }
-    private addWarehouse(req:Request, res: Response, next:NextFunction){
-        const warehouse_mutation =  addWarehouse(req.body);
-
-        res.status(200).json({
-            warehouse_mutation
-        })
-    } 
-
-    private getAllWarehouses(req:Request, res: Response, next:NextFunction){
-        const warehouse_query =  getAllWarehouses();
-
-        res.status(200).json({
-            warehouse_query
-        })
+        res.status(200).json(response)
+        
     }
 
-    private getWarehouseByFreightCompany(req:Request, res: Response, next:NextFunction){
-        const warehouse_query = getWarehouseByFreightCompany(req.body.id);
+    private async deleteWarehouse(req: RequestType<string>, res: Response, next:NextFunction){
+        
+        const warehouse_mutation:WarehouseInterface = await WarehouseModel.findByIdAndDelete(req.body.payload.id);
 
-        res.status(200).json({
-            warehouse_query
-        })
+
+        const response:ResponseType<WarehouseInterface>  =
+        {
+            success:true, 
+            message:"Freight company delete successful",
+            data: warehouse_mutation
+        } 
+
+        res.status(200).json(response)
+        
     }
 
-    private getWarehouse(req:Request, res: Response, next:NextFunction){
-        const warehouse_query = getWarehouseByFreightCompany(req.body.guid);
-
-        res.status(200).json({
-            warehouse_query
-        })
-    }
-
-    private warehouseVacant(req:Request, res: Response, next:NextFunction){
-        const warehouse_query = warehouseVacant(req.body.guid);
-
-        res.status(200).json({
-            warehouse_query
-        })
-    }
-
-    private updateWarehouse(req:Request, res: Response, next:NextFunction){
-        const warehouse_mutation = updateWarehouse(req.body.guid, req.body);
-
-        res.status(200).json({
-            warehouse_mutation
-        })
-    }
-
-    private deleteWarehouse(req:Request, res: Response, next:NextFunction){
-        const warehouse_mutation = deleteWarehouse(req.body.id);
-
-        res.status(200).json({
-            warehouse_mutation
-        })
-    }
+   
 }
 
 export default WarehouseController;

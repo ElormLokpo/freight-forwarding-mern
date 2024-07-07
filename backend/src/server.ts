@@ -9,10 +9,10 @@ import FreightCompanyController from "./entities/freight-company/freight-company
 
 const app = new App([
     new AuthController(),
+    new FreightCompanyController(),
     new UsersController(),
     new PingController(),
-    // new WarehouseController(),
+    new WarehouseController(),
     // new WarehouseStaffController(),
-    // new FreightCompanyController()
 ]);
 app.listen();

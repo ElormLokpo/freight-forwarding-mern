@@ -4,9 +4,9 @@ import bcrypt from "bcrypt";
 
 
 const WarehouseStaffSchema = new mongoose.Schema({
-    guid:{
+    _id:{
         type:String, 
-        required:true
+        
     },
     staff_id:{
         type:Number,
@@ -36,7 +36,7 @@ const WarehouseStaffSchema = new mongoose.Schema({
 },{timestamps:true})
 
 WarehouseStaffSchema.pre("save", async function(){
-    this.guid = v4();
+    this._id = v4();
     this.staff_id = Math.floor(100000 + Math.random() * 900000);
     
     const salt = await bcrypt.genSalt(10);
