@@ -6,7 +6,11 @@ export const getAllFreightCompanies = async ()=>{
     const freight_companies =  await FreightCompanyModel.find()
     .populate({
         path:"warehouses",
-        select:"warehouse_name _id"
+        select:"name _id"
+    })
+    .populate({
+        path: "current_shipment",
+        select: "_id tracking_number name status"
     })
     .populate({
         path:"owner",
@@ -23,7 +27,11 @@ export const getFreightCompany = async (id:string)=>{
     const freight_company = await FreightCompanyModel.findById(id)
     .populate({
         path:"warehouses",
-        select:"warehouse_name _id"
+        select:"name _id"
+    })
+    .populate({
+        path: "current_shipment",
+        select: "_id tracking_number name status"
     })
     .populate({
         path:"owner",
@@ -39,7 +47,11 @@ export const getFreightCompanyByName = async (name:string)=>{
     const freight_company = await FreightCompanyModel.findOne({company_name: name})
     .populate({
         path:"warehouses",
-        select:"warehouse_name _id"
+        select:"name _id"
+    })
+    .populate({
+        path: "current_shipment",
+        select: "_id tracking_number name status"
     })
     .populate({
         path:"owner",

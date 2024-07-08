@@ -42,6 +42,14 @@ FreightCompanySchema.virtual("warehouses",{
     justOne: false
 })
 
+FreightCompanySchema.virtual("current_shipment",{
+    ref:"ShipmentModel",
+    localField:"_id",
+    foreignField:"freight_company",
+    justOne:false
+
+})
+
 FreightCompanySchema.set("toJSON",{virtuals:true});
 FreightCompanySchema.set("toObject", {virtuals:true});
 

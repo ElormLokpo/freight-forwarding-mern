@@ -8,9 +8,13 @@ const WarehouseStaffSchema = new mongoose.Schema({
         type:String, 
         
     },
+    warehouse_id:{
+        type:String, 
+        ref: "WarehouseModel"
+    },
     staff_id:{
         type:Number,
-        required: true
+        
     }, 
     fullname: {
         type:String,
@@ -18,29 +22,23 @@ const WarehouseStaffSchema = new mongoose.Schema({
     }, 
     phone: {
         type:String,
-        required: true
+       
     },  
     email:{
         type:String,
-        required: true
+       
     },  
-    password:{
-        type:String,
-        required: true,
-        select: false
-    },  
+   
     role: {
         type:String,
-        required: true
+       
     }, 
 },{timestamps:true})
 
 WarehouseStaffSchema.pre("save", async function(){
     this._id = v4();
     this.staff_id = Math.floor(100000 + Math.random() * 900000);
-    
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+ 
     
 })
 

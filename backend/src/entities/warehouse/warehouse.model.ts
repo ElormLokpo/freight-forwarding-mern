@@ -31,9 +31,27 @@ const WarehouseSchema = new mongoose.Schema({
     timestamps:true
 });
 
+WarehouseSchema.virtual("warehouse_staff",{
+    ref:"WarehouseStaffModel",
+    localField:"_id",
+    foreignField:"warehouse_id",
+    justOne:false
+})
+
+WarehouseSchema.virtual("current_shipment",{
+    ref:"ShipmentModel",
+    localField:"_id",
+    foreignField:"current_warehouse",
+    justOne:false
+})
+
+WarehouseSchema.set("toJSON",{virtuals:true});
+WarehouseSchema.set("toObject",{virtuals:true});
+
 WarehouseSchema.pre("save", async function(){
     this._id = v4();
 })  
+
 
 
 export const WarehouseModel = mongoose.model<mongoose.Document>("WarehouseModel", WarehouseSchema)

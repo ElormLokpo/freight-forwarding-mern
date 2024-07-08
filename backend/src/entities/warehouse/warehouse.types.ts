@@ -6,7 +6,9 @@ export interface WarehouseInterface{
     location?: string,
     manager_id?: any,
     freight_company_id?: any,
-    warehouse_vacant?:boolean
+    warehouse_staff?:any[],
+    warehouse_vacant?:boolean,
+    current_shipment?:any[]
 }
 
 export interface UpdateWarehouseRequestType{

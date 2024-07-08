@@ -13,7 +13,8 @@ export interface FreightCompanyInterface extends Document{
     phone?:string
     urls?:string[]
     owner?:string
-    warehouses?: WarehouseInterface[]
+    warehouses?: WarehouseInterface[],
+    current_shipment?: any[]
 }
 
 export interface UpdateFreightCompanyRequestType{

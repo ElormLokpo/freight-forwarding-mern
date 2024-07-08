@@ -24,13 +24,13 @@ class WarehouseController implements Controller{
         this.router.delete(`${this.path}`, this.deleteWarehouse);
        }
 
-       private async getAllWarehouses(req:RequestType<{}>, res: Response, next:NextFunction){
-        const warehouse_query:WarehouseInterface[] = await getAllWarehouses();
+       private async getAllWarehouses(req:RequestType<string>, res: Response, next:NextFunction){
+        const warehouse_query:WarehouseInterface[] = await getAllWarehouses(req.body.payload);
 
         const response:ResponseType<WarehouseInterface[]>  =
         {
             success:true, 
-            message:"Freight company query successful",
+            message:"Warehouse query successful",
             data: warehouse_query
         } 
         res.status(200).json(response);
@@ -43,7 +43,7 @@ class WarehouseController implements Controller{
         const response:ResponseType<WarehouseInterface>  =
         {
             success:true, 
-            message:"Freight company query successful",
+            message:"Warehouse query successful",
             data: warehouse_query
         } 
         res.status(200).json(response);
@@ -56,7 +56,7 @@ class WarehouseController implements Controller{
         const response:ResponseType<WarehouseInterface>  =
         {
             success:true, 
-            message:"Freight company query successful",
+            message:"Warehouse query successful",
             data: warehouse_query
         } 
         res.status(200).json(response);
@@ -64,13 +64,13 @@ class WarehouseController implements Controller{
     }
 
     private async addWarehouse(req: RequestType<WarehouseInterface>, res: Response, next:NextFunction){
-        const warehouse_mutation:WarehouseInterface = await addWarehouse(req.body);
+        const warehouse_mutation:WarehouseInterface = await addWarehouse(req.body.payload);
 
 
         const response:ResponseType<WarehouseInterface>  =
         {
             success:true, 
-            message:"Freight company created successfully",
+            message:"Warehouse created successfully",
             data: warehouse_mutation
         } 
 
@@ -86,7 +86,7 @@ class WarehouseController implements Controller{
         const response:ResponseType<WarehouseInterface>  =
         {
             success:true, 
-            message:"Freight company update successful",
+            message:"Warehouse update successful",
             data: warehouse_mutation
         } 
 
@@ -102,7 +102,7 @@ class WarehouseController implements Controller{
         const response:ResponseType<WarehouseInterface>  =
         {
             success:true, 
-            message:"Freight company delete successful",
+            message:"Warehouse delete successful",
             data: warehouse_mutation
         } 
 
