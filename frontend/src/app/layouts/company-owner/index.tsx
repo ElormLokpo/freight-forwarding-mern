@@ -1,6 +1,5 @@
 import CompanyOwnerSideNav from '@/app/pages/dashbaords/company-owner/components/side-nav';
-import React from 'react';
-import {Outlet} from "react-router-dom";
+import {Outlet} from "@tanstack/react-router";
 
 const CompanyOwnerDashboardLayout = () => {
   return (
