@@ -1,8 +1,17 @@
+import TableComponent from '@/app/components/table'
 import React from 'react'
+import WTopNav from './components/top-nav'
+
 
 const CoWarehousePage = () => {
   return (
-    <div>CoWarehousePage</div>
+    <div>
+      <><WTopNav /></>
+      
+
+
+      <TableComponent />
+    </div>
   )
 }
 
