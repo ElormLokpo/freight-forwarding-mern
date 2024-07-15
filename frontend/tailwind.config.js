@@ -17,16 +17,6 @@ module.exports = {
       },
     },
     extend: {
-      gridTemplateColumns: {
-        
-        '16': 'repeat(16, minmax(0, 1fr))',
-        '14': 'repeat(14, minmax(0, 1fr))',
-      },
-      gridColumn: {
-        'span-14': 'span 14 / span 14',
-        'span-12': 'span 12 / span 12',
-
-      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -81,7 +71,15 @@ module.exports = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
-    },
+      gridTemplateColumns: {
+        '16': 'repeat(16, minmax(0, 1fr))',
+        '15': 'repeat(15, minmax(0, 1fr))',
+      },
+      gridColumn: {
+        'span-14': 'span 14 / span 14',
+        'span-13': 'span 13 / span 13',
+      }
+    }
   },
   plugins: [require("tailwindcss-animate")],
 }

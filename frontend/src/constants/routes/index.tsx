@@ -1,12 +1,10 @@
 
-const compnany_onwer_route_base= "/dashboards/company-owner/";
+const co_route_base= "/dashboards/co/";
 
-export const company_onwer_route = {
-    home: "",
-    freight_company:`${compnany_onwer_route_base}freight-company`,
-    shipment:`${compnany_onwer_route_base}shipment`,
-    vehicle:`${compnany_onwer_route_base}vehicle`,
-    warehouse:`${compnany_onwer_route_base}warehouse`,
-    warehouse_staff: `${compnany_onwer_route_base}warehouse-staff`
+export const co_route = {
+    freight_company:`${co_route_base}freight-company`,
+    shipment:`${co_route_base}shipment`,
+    vehicle:`${co_route_base}vehicle`,
+    warehouse:`${co_route_base}warehouses`,
+    warehouse_staff: `${co_route_base}warehouse-staff`
 }
-
