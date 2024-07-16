@@ -19,7 +19,7 @@ const ActionDropDown = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className='bg-white hover:cursor-pointer rounded border text-black px-2 py-1 font-semibold border-2 border-gray-800 flex items-center justify-center'>
+        <div className='bg-white hover:cursor-pointer dark:bg-black dark:border-2 dark:font-bold dark:border-indigo-500 dark:text-indigo-500 rounded border text-black px-2 py-1 font-semibold border-2 border-gray-800 flex items-center justify-center'>
            <p>Actions</p>
         </div>
 

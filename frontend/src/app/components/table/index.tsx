@@ -10,7 +10,7 @@ import {
 import ActionDropDown from "@/app/pages/dashboards/company-onwer/warehouses/components/action-dropdown";
 const TableComponent = () => {
   return (
-    <div>
+    <div className="dark:bg-stone-900">
       <Table>
         <TableHeader>
           <TableRow>

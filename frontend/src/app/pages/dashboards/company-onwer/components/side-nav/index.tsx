@@ -16,13 +16,14 @@ import ThemeDropDown from "@/app/components/theme-dropdown";
 const CoSideNav = () => {
 
   let navStyle =
-    "font-semibold mb-2 flex gap-2 items-center hover:bg-gray-700 hover:rounded  py-2 px-2 hover:text-white hover:cursor-pointer";
-  let activeStyle = "bg-black text-white rounded";
+    "font-semibold dark:text-gray-200 mb-2 flex gap-2 items-center hover:bg-gray-700 hover:rounded  py-2 px-2 hover:text-white hover:cursor-pointer";
+  let activeStyle = "bg-black dark:bg-indigo-500 text-white rounded";
   return (
     <div className="flex flex-col h-full justify-between p-2 text-sm">
       <div className="text-gray-600">
         <div className="mb-6 p-2">
           <Logo />
+          
         </div>
 
         <div>
@@ -100,9 +101,7 @@ const CoSideNav = () => {
             <p>Settings</p>
           </NavLink>
 
-          <div>
-              <ThemeDropDown navStyle={navStyle}/>
-          </div>
+          
 
           <NavLink
             to={route.shipment}
@@ -114,6 +113,8 @@ const CoSideNav = () => {
             </p>
             <p>Search</p>
           </NavLink>
+
+          <ThemeDropDown />
         </div>
       </div>
 

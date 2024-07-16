@@ -12,6 +12,9 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as CoLayoutImport } from './routes/_coLayout'
+import { Route as CoAuthLayoutImport } from './routes/_coAuthLayout'
+import { Route as CoAuthLayoutCoSignupRouteImport } from './routes/_coAuthLayout/co/signup/route'
+import { Route as CoAuthLayoutCoSigninRouteImport } from './routes/_coAuthLayout/co/signin/route'
 import { Route as CoLayoutDashboardsCoWarehousesRouteImport } from './routes/_coLayout/dashboards/co/warehouses/route'
 
 // Create/Update Routes
@@ -19,6 +22,21 @@ import { Route as CoLayoutDashboardsCoWarehousesRouteImport } from './routes/_co
 const CoLayoutRoute = CoLayoutImport.update({
   id: '/_coLayout',
   getParentRoute: () => rootRoute,
+} as any)
+
+const CoAuthLayoutRoute = CoAuthLayoutImport.update({
+  id: '/_coAuthLayout',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CoAuthLayoutCoSignupRouteRoute = CoAuthLayoutCoSignupRouteImport.update({
+  path: '/co/signup',
+  getParentRoute: () => CoAuthLayoutRoute,
+} as any)
+
+const CoAuthLayoutCoSigninRouteRoute = CoAuthLayoutCoSigninRouteImport.update({
+  path: '/co/signin',
+  getParentRoute: () => CoAuthLayoutRoute,
 } as any)
 
 const CoLayoutDashboardsCoWarehousesRouteRoute =
@@ -31,12 +49,33 @@ const CoLayoutDashboardsCoWarehousesRouteRoute =
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/_coAuthLayout': {
+      id: '/_coAuthLayout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof CoAuthLayoutImport
+      parentRoute: typeof rootRoute
+    }
     '/_coLayout': {
       id: '/_coLayout'
       path: ''
       fullPath: ''
       preLoaderRoute: typeof CoLayoutImport
       parentRoute: typeof rootRoute
+    }
+    '/_coAuthLayout/co/signin': {
+      id: '/_coAuthLayout/co/signin'
+      path: '/co/signin'
+      fullPath: '/co/signin'
+      preLoaderRoute: typeof CoAuthLayoutCoSigninRouteImport
+      parentRoute: typeof CoAuthLayoutImport
+    }
+    '/_coAuthLayout/co/signup': {
+      id: '/_coAuthLayout/co/signup'
+      path: '/co/signup'
+      fullPath: '/co/signup'
+      preLoaderRoute: typeof CoAuthLayoutCoSignupRouteImport
+      parentRoute: typeof CoAuthLayoutImport
     }
     '/_coLayout/dashboards/co/warehouses': {
       id: '/_coLayout/dashboards/co/warehouses'
@@ -51,6 +90,10 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren({
+  CoAuthLayoutRoute: CoAuthLayoutRoute.addChildren({
+    CoAuthLayoutCoSigninRouteRoute,
+    CoAuthLayoutCoSignupRouteRoute,
+  }),
   CoLayoutRoute: CoLayoutRoute.addChildren({
     CoLayoutDashboardsCoWarehousesRouteRoute,
   }),
@@ -64,7 +107,15 @@ export const routeTree = rootRoute.addChildren({
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
+        "/_coAuthLayout",
         "/_coLayout"
+      ]
+    },
+    "/_coAuthLayout": {
+      "filePath": "_coAuthLayout.tsx",
+      "children": [
+        "/_coAuthLayout/co/signin",
+        "/_coAuthLayout/co/signup"
       ]
     },
     "/_coLayout": {
@@ -72,6 +123,14 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/_coLayout/dashboards/co/warehouses"
       ]
+    },
+    "/_coAuthLayout/co/signin": {
+      "filePath": "_coAuthLayout/co/signin/route.tsx",
+      "parent": "/_coAuthLayout"
+    },
+    "/_coAuthLayout/co/signup": {
+      "filePath": "_coAuthLayout/co/signup/route.tsx",
+      "parent": "/_coAuthLayout"
     },
     "/_coLayout/dashboards/co/warehouses": {
       "filePath": "_coLayout/dashboards/co/warehouses/route.tsx",

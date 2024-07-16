@@ -1,3 +1,4 @@
 export interface IProps{
-    navStyle: string
+    navStyle?: string,
+    content? : string
 }
