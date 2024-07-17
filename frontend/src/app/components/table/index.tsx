@@ -27,7 +27,7 @@ const TableComponent = () => {
           {[
             1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
           ].map((i) => (
-            <TableRow className="">
+            <TableRow className="dark:text-gray-200">
               <TableCell>Adringanor Station Warehouse</TableCell>
               <TableCell>Adringanor, East Stree</TableCell>
               <TableCell>StarLink Freight Company</TableCell>

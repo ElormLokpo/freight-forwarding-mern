@@ -12,11 +12,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { MainButton } from "@/app/components/button";
 import { co_auth_route as auth_route } from "@/constants/routes";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import {motion as m} from "framer-motion";
 import { slideInTop } from "@/animation";
+import { useSignupMutation } from "@/services/api/auth";
+import {toast} from "sonner";
 
 const CoSignUpPage = () => {
+  const [signUp, {isLoading}] = useSignupMutation();
+  const navigate = useNavigate()
+  
   const form = useForm<SignUpSchemaType>({
     resolver: zodResolver(SignUpSchema),
     defaultValues: {
@@ -36,8 +41,19 @@ const CoSignUpPage = () => {
     },
   });
 
+  const handleSignUpUser = async(data: SignUpSchemaType)=>{
+    const response = await signUp({payload: data});
+    
+    
+    toast.success("Account created successfully");
+    navigate({
+      to:"/dashboards/co/warehouses"
+    })
+
+  }
+
   const onSubmit = (data: SignUpSchemaType) => {
-    console.log(data);
+      handleSignUpUser(data)
   };
 
   return (
@@ -49,7 +65,7 @@ const CoSignUpPage = () => {
       className="w-[450px]"
     >
       <div className="font-bold mb-3">
-        <span className="dark:text-indigo-500">BajFreight</span> <span className="font-light"> &gt; Sign Up </span>
+        <span className="dark:text-indigo-500">Shipper</span> <span className="font-light"> &gt; Sign Up </span>
       </div>
 
       <div className="bg-white dark:bg-gray-900 rounded p-3">
@@ -184,9 +200,14 @@ const CoSignUpPage = () => {
 
             <div className="mb-2">
               <MainButton className="bg-black dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white hover:bg-gray-800 text-sm font-semibold py-3 px-2 rounded w-full">
-                <div>
-                  <p>Sign Up</p>
+                {isLoading?<div>
+                  Signing you up ...
                 </div>
+                : <div>
+                    <p>Sign Up</p>
+                  </div>}
+                
+               
               </MainButton>
             </div>
 

@@ -20,7 +20,7 @@ class UsersController implements Controller{
     private intializeRoutes(){
         this.router.get(`${this.path}/all`, this.getAllUsers);
         this.router.post(`${this.path}/add`, this.createUser);
-        this.router.get(`${this.path}/id`, this.getUserById);
+        this.router.get(`${this.path}/:id`, this.getUserById);
         this.router.get(`${this.path}/email`, this.getUserByEmail);
         this.router.patch(`${this.path}/id`, this.updateUserById);
         this.router.delete(`${this.path}/id`, this.deleteUserById);
@@ -56,12 +56,12 @@ class UsersController implements Controller{
         res.status(200).json(response);
     }
 
-    private async getUserById(req:RequestType<string>, res:Response, next:NextFunction){
+    private async getUserById(req:Request, res:Response, next:NextFunction){
         
-        const user_query:UserInterface = await findUserById(req.body.payload);
+        const user_query:UserInterface = await findUserById(req.params.id);
 
         if(!user_query){
-            next(new UserNotFoundException(req.body.payload))
+            next(new UserNotFoundException(req.params.id))
         }
         
         const response:ResponseType<UserInterface[]> = {

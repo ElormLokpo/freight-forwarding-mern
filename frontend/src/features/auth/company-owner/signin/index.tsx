@@ -13,14 +13,17 @@ import {
 import { Input } from "@/components/ui/input";
 import { MainButton } from "@/app/components/button";
 import { co_auth_route as auth_route } from "@/constants/routes";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { motion as m } from "framer-motion";
 import { slideInTop } from "@/animation";
-import { useToast } from "@/components/ui/use-toast"
+import { useSigninMutation } from "@/services/api/auth";
+import {toast} from "sonner";
+
 
 
 const CoSignInPage = () => {
-  const { toast } = useToast()
+  const [signIn, {isLoading}] = useSigninMutation();
+  const navigate = useNavigate();
 
   const form = useForm<SignInSchemaType>({
     resolver: zodResolver(SignInSchema),
@@ -30,13 +33,21 @@ const CoSignInPage = () => {
     },
   });
 
+  const handleSignInUser = async (data: SignInSchemaType)=>{
+    const response = signIn({payload:data});
+
+    toast.success("Sign in successful")
+
+  }
+
   const onSubmit = (data: SignInSchemaType) => {
     console.log(data);
-    toast({
-     
-      title: "Scheduled: Catch up",
-      description: "Friday, February 10, 2023 at 5:57 PM",
+    handleSignInUser(data)
+
+    navigate({
+      to:"/dashboards/co/warehouses"
     })
+   
   };
 
   return (
@@ -48,7 +59,7 @@ const CoSignInPage = () => {
       className="w-[400px]"
     >
       <div className="font-bold mb-3">
-        <span className="dark:text-indigo-500">BajFreight</span> <span className="font-light"> &gt; Sign In </span>
+        <span className="dark:text-indigo-500">Shipper</span> <span className="font-light"> &gt; Sign In </span>
       </div>
 
       <div className="bg-white dark:bg-gray-900 rounded p-3">

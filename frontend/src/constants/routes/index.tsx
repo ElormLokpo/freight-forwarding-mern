@@ -15,3 +15,6 @@ export const co_auth_route = {
     signup: `${co_auth_base}signup`,
 
 }
+
+
+export const backend_api_route = import.meta.env.VITE_BACKEND_ENDPOINT
