@@ -3,3 +3,7 @@ export interface ResponseType<T>{
     message: string, 
     data: T
 }
+
+export interface RequestType<T>{
+    payload: T
+}

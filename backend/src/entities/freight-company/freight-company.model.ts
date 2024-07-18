@@ -22,7 +22,7 @@ const FreightCompanySchema = new mongoose.Schema({
     address: addressSchema,
     email:{type:String}, 
     phone:{type:String},
-    urls:[{type:String}],
+    urls:{type:String},
     owner:{
          type: String, 
          ref:"UserModel",

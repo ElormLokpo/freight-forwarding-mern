@@ -47,7 +47,7 @@ const CoSignUpPage = () => {
     
     toast.success("Account created successfully");
     navigate({
-      to:"/dashboards/co/warehouses"
+      to:"/co/company-initial"
     })
 
   }

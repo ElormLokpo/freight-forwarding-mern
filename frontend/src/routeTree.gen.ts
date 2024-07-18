@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as CoLayoutImport } from './routes/_coLayout'
 import { Route as CoAuthLayoutImport } from './routes/_coAuthLayout'
+import { Route as CoCompanyInitialRouteImport } from './routes/co/company-initial/route'
 import { Route as CoAuthLayoutCoSignupRouteImport } from './routes/_coAuthLayout/co/signup/route'
 import { Route as CoAuthLayoutCoSigninRouteImport } from './routes/_coAuthLayout/co/signin/route'
 import { Route as CoLayoutDashboardsCoWarehousesRouteImport } from './routes/_coLayout/dashboards/co/warehouses/route'
@@ -26,6 +27,11 @@ const CoLayoutRoute = CoLayoutImport.update({
 
 const CoAuthLayoutRoute = CoAuthLayoutImport.update({
   id: '/_coAuthLayout',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CoCompanyInitialRouteRoute = CoCompanyInitialRouteImport.update({
+  path: '/co/company-initial',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -63,6 +69,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CoLayoutImport
       parentRoute: typeof rootRoute
     }
+    '/co/company-initial': {
+      id: '/co/company-initial'
+      path: '/co/company-initial'
+      fullPath: '/co/company-initial'
+      preLoaderRoute: typeof CoCompanyInitialRouteImport
+      parentRoute: typeof rootRoute
+    }
     '/_coAuthLayout/co/signin': {
       id: '/_coAuthLayout/co/signin'
       path: '/co/signin'
@@ -97,6 +110,7 @@ export const routeTree = rootRoute.addChildren({
   CoLayoutRoute: CoLayoutRoute.addChildren({
     CoLayoutDashboardsCoWarehousesRouteRoute,
   }),
+  CoCompanyInitialRouteRoute,
 })
 
 /* prettier-ignore-end */
@@ -108,7 +122,8 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/_coAuthLayout",
-        "/_coLayout"
+        "/_coLayout",
+        "/co/company-initial"
       ]
     },
     "/_coAuthLayout": {
@@ -123,6 +138,9 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/_coLayout/dashboards/co/warehouses"
       ]
+    },
+    "/co/company-initial": {
+      "filePath": "co/company-initial/route.tsx"
     },
     "/_coAuthLayout/co/signin": {
       "filePath": "_coAuthLayout/co/signin/route.tsx",

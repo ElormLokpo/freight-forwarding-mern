@@ -11,3 +11,4 @@ export interface AuthRequestDataType<T>{
 export interface GetUserRequstType{
     payload:string
 }
+

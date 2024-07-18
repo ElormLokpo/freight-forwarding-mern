@@ -1,5 +1,5 @@
 import { NextFunction, Router, Request, Response } from "express";
-import { getAllFreightCompanies, addFreightCompany, getFreightCompany, getFreightCompanyByName} from "./freight-company.services";
+import { getAllFreightCompanies, addFreightCompany, getFreightCompany, getFreightCompanyByName, getAllFreightCompaniesByOwner} from "./freight-company.services";
 import Controller from "../../interfaces/controllers.interface";
 import { RequestType, ResponseType } from "../../types";
 import { FreightCompanyInterface, UpdateFreightCompanyRequestType } from "./freight-company.types";
@@ -21,6 +21,7 @@ class FreightCompanyController implements Controller{
         this.router.get(`${this.path}/name`, this.getFreightCompanyByName);
         this.router.patch(`${this.path}`, this.updateFreightCompany);
         this.router.delete(`${this.path}`, this.deleteFreightCompany);
+        this.router.get(`${this.path}/all/owner/:id`, this.getAllFreightCompaniesByOwner)
 
 
         
@@ -38,6 +39,20 @@ class FreightCompanyController implements Controller{
         res.status(200).json(response);
         
     }
+
+    private async getAllFreightCompaniesByOwner(req:RequestType<{}>, res: Response, next:NextFunction){
+        const freight_company_query:FreightCompanyInterface[] = await getAllFreightCompaniesByOwner(req.params.id);
+
+        const response:ResponseType<FreightCompanyInterface[]>  =
+        {
+            success:true, 
+            message:"Freight company query successful",
+            data: freight_company_query
+        } 
+        res.status(200).json(response);
+        
+    }
+
 
     private async getFreightCompany(req:RequestType<string>, res: Response, next:NextFunction){
         const freight_company_query:FreightCompanyInterface = await getFreightCompany(req.body.payload);
@@ -66,7 +81,7 @@ class FreightCompanyController implements Controller{
     }
 
     private async addFreightCompany(req: RequestType<FreightCompanyInterface>, res: Response, next:NextFunction){
-        const freight_company_mutation:FreightCompanyInterface = await addFreightCompany(req.body);
+        const freight_company_mutation:FreightCompanyInterface = await addFreightCompany(req.body.payload);
 
 
         const response:ResponseType<FreightCompanyInterface>  =
