@@ -1,11 +1,12 @@
 import { NextFunction, Request, Response, Router } from "express";
 import Controller from "../../../interfaces/controllers.interface";
-import {addWarehouseStaff, getWarehouseStaff, updateWarehouseStaff, deleteWarehouseStaff, getWarehouseStaffId} from "./warehouse.staff.service"
-import {getAllWarehouseStaff} from "../warehouse.service";
-import bcrypt from "bcrypt";
-import { createToken } from "../../../helpers/token-gen/token-gen";
+import {addWarehouseStaff, getWarehouseStaff, getAllWarehouseStaff, getWarehouseStaffByName} from "./warehouse.staff.service"
+import { WarehouseStaffInterface, UpdateWarehouseStaffRequestType } from "./warehouse.staff.types";
+import { RequestType, ResponseType } from "../../../types";
+import { WarehouseStaffModel } from "./warehouse.staff.model";
 
-class WarehouseStaffController implements Controller{
+
+class WarehouseStaffStaffController implements Controller{
     public path = "/warehouse-staff";
     public router = Router();
 
@@ -14,56 +15,101 @@ class WarehouseStaffController implements Controller{
     }
 
     private initializeRoutes(){
-            this.router.get(`${this.path}/all`, this.getAllWarehouseStaff);
-            this.router.get(`${this.path}/guid`, this.getWarehouseStaff);
-            this.router.post(`${this.path}/add`, this.addWarehouseStaff);
-            this.router.get(`${this.path}/login`, this.loginWarehouseStaff);
-     
-
+        this.router.get(`${this.path}/all`, this.getAllWarehouseStaff);
+        this.router.post(`${this.path}`, this.addWarehouseStaff)
+        this.router.get(`${this.path}/id`, this.getWarehouseStaff);
+        this.router.get(`${this.path}/name`, this.getWarehouseStaffByName);
+        this.router.patch(`${this.path}`, this.updateWarehouseStaff);
+        this.router.delete(`${this.path}`, this.deleteWarehouseStaff)
     }
 
-    private async addWarehouseStaff(req:Request, res: Response, next:NextFunction){
-        const warehouse_staff_mutation = await addWarehouseStaff(req.body);
+    private async getAllWarehouseStaff(req:RequestType<string>, res: Response, next:NextFunction){
+        const WarehouseStaff_query:WarehouseStaffInterface[] = await getAllWarehouseStaff(req.body.payload);
 
-        res.status(200).json({
-            warehouse_staff_mutation
-        })
-    }
-
-    private async getAllWarehouseStaff(req:Request, res: Response, next:NextFunction){
-        const warehouse_staff_query = await getAllWarehouseStaff(req.body.warehouseId);
+        const response:ResponseType<WarehouseStaffInterface[]>  =
+        {
+            success:true, 
+            message:"Warehouse Staff query successful",
+            data: WarehouseStaff_query
+        } 
+        res.status(200).json(response);
         
-        res.status(200).json({
-            warehouse_staff_query
-        })
-            
     }
 
-    private async getWarehouseStaff(req:Request, res: Response, next:NextFunction){
-        const warehouse_staff_query = await getWarehouseStaff(req.body.guid);
+    private async getWarehouseStaff(req:RequestType<string>, res: Response, next:NextFunction){
+        const WarehouseStaff_query:WarehouseStaffInterface = await getWarehouseStaff(req.body.payload);
 
-        res.status(200).json({
-            warehouse_staff_query
-        })
+        const response:ResponseType<WarehouseStaffInterface>  =
+        {
+            success:true, 
+            message:"Warehouse Staff query successful",
+            data: WarehouseStaff_query
+        } 
+        res.status(200).json(response);
+        
     }
 
-    private async loginWarehouseStaff(req:Request, res: Response, next:NextFunction){
-        const {staff_id, password} = req.body;
-        const warehouse_staff_query:any = await getWarehouseStaffId(staff_id);
+    private async getWarehouseStaffByName(req:RequestType<string>, res: Response, next:NextFunction){
+        const WarehouseStaff_query:WarehouseStaffInterface = await getWarehouseStaffByName(req.body.payload);
 
-        const valid_password = bcrypt.compare(password, warehouse_staff_query.password);
+        const response:ResponseType<WarehouseStaffInterface>  =
+        {
+            success:true, 
+            message:"Warehouse Staff query successful",
+            data: WarehouseStaff_query
+        } 
+        res.status(200).json(response);
+        
+    }
 
-        if(valid_password){
-            const access_token = createToken(warehouse_staff_query.guid);
+    private async addWarehouseStaff(req: RequestType<WarehouseStaffInterface>, res: Response, next:NextFunction){
+        const WarehouseStaff_mutation:WarehouseStaffInterface = await addWarehouseStaff(req.body);
 
-            if (access_token){
-                res.status(200).json({access_token})
-            }
-        }
 
+        const response:ResponseType<WarehouseStaffInterface>  =
+        {
+            success:true, 
+            message:"Warehouse Staff added successfully",
+            data: WarehouseStaff_mutation
+        } 
+
+        res.status(200).json(response)
+        
+    }
+
+    private async updateWarehouseStaff(req: RequestType<UpdateWarehouseStaffRequestType>, res: Response, next:NextFunction){
+        const update_data = req.body.payload.data;
+        const WarehouseStaff_mutation:WarehouseStaffInterface = await WarehouseStaffModel.findByIdAndUpdate(req.body.payload.id, update_data, {new:true})
+        
+
+        const response:ResponseType<WarehouseStaffInterface>  =
+        {
+            success:true, 
+            message:"Warehouse Staff update successful",
+            data: WarehouseStaff_mutation
+        } 
+
+        res.status(200).json(response)
+        
+    }
+
+    private async deleteWarehouseStaff(req: RequestType<string>, res: Response, next:NextFunction){
+        
+        const WarehouseStaff_mutation:WarehouseStaffInterface = await WarehouseStaffModel.findByIdAndDelete(req.body.payload.id);
+
+
+        const response:ResponseType<WarehouseStaffInterface>  =
+        {
+            success:true, 
+            message:"Warehouse Staff delete successful",
+            data: WarehouseStaff_mutation
+        } 
+
+        res.status(200).json(response)
+        
     }
 
 
 }
 
-export default WarehouseStaffController;
+export default WarehouseStaffStaffController;

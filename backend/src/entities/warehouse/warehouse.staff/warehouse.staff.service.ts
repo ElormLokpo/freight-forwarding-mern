@@ -1,29 +1,55 @@
 
 import { WarehouseStaffModel } from "./warehouse.staff.model";
+import { WarehouseStaffInterface } from "./warehouse.staff.types";
 
-export const addWarehouseStaff = async (warehouseStaff:any)=>{
-    return await WarehouseStaffModel.create(warehouseStaff);
+export const addWarehouseStaff = async (warehouseStaff:WarehouseStaffInterface)=>{
+    return await WarehouseStaffModel.create(warehouseStaff) as WarehouseStaffInterface;
 }
 
+export const getAllWarehouseStaff = async(warehouse_id:string)=>{
+    return await WarehouseStaffModel.find({warehouse_id})
+    .populate({
+        path:"warehouse_id",
+        select:"_id name"
+    })
+    .lean()
+    .exec() as WarehouseStaffInterface[];
+}
 
-export const getWarehouseStaff = async(guid:string)=>{
-    return await WarehouseStaffModel.findOne({guid});
+export const getWarehouseStaff = async(id:string)=>{
+    return await WarehouseStaffModel
+    .findById(id)
+    .populate({
+        path:"warehouse_id",
+        select:"_id name"
+    })
+    .lean()
+    .exec() as WarehouseStaffInterface;
 
+}
+
+export const getWarehouseStaffByName = async(name:string)=>{
+    return await WarehouseStaffModel
+    .findOne({fullname:name})
+    .populate({
+        path:"warehouse_id",
+        select:"_id name"
+    })
+    .lean()
+    .exec() as WarehouseStaffInterface;
 }
 
 
 export const getWarehouseStaffId = async(staff_id:string)=>{
-    return await WarehouseStaffModel.findOne({staff_id}).select("+password");
+    return await WarehouseStaffModel
+    .findOne({staff_id})
+    .populate({
+        path:"warehouse_id",
+        select:"_id name"
+    })
+    .lean()
+    .exec() as WarehouseStaffInterface;
 
 }
 
 
-export const updateWarehouseStaff = async (staff_id:string, data:any)=>{
-    const warehouse:any = await WarehouseStaffModel.findOne({staff_id});
-    return await WarehouseStaffModel.findByIdAndUpdate(warehouse._id, data,{new:true});
-}
-
-export const deleteWarehouseStaff = async (staff_id:string)=>{
-    const warehouse:any = await WarehouseStaffModel.findOne({staff_id});
-    return await WarehouseStaffModel.findByIdAndDelete(warehouse._id);
-}

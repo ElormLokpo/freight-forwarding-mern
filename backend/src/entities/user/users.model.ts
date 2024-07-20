@@ -87,6 +87,15 @@ userSchema.virtual("fullname").get(function(){
     return `${this.firstname} ${this.othernames} ${this.lastname}`
 })
 
+userSchema.virtual("freight_companies", {
+    ref:"FreightCompanyModel",
+    localField:"_id",
+    foreignField:"owner"
+})
+
+userSchema.set("toJSON", {virtuals:true});
+userSchema.set("toObject", {virtuals:true});
+
 userSchema.pre("save", async function(next: NextFunction){
     const user = this;
 
