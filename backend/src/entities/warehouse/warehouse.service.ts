@@ -21,6 +21,10 @@ export const getAllWarehouses = async (freight_id:string)=>{
         path:"manager_id",
         select:"firstname lastname email _id"
     })
+    .populate({
+        path:"current_vehicles",
+        select:"name tracking_number in_transit _id"
+    })
     .lean()
     .exec() as WarehouseInterface[];
     return warehouse_query;
@@ -46,6 +50,10 @@ export const getWarehouse = async (id:string)=>{
         path:"manager_id",
         select:"firstname lastname email _id"
     })
+    .populate({
+        path:"current_vehicles",
+        select:"name tracking_number in_transit _id"
+    })
     .lean()
     .exec() as WarehouseInterface;
     return warehouse_query;
@@ -70,6 +78,10 @@ export const getWarehouseByName = async (name:string)=>{
     .populate({
         path:"manager_id",
         select:"firstname lastname email _id"
+    })
+    .populate({
+        path:"current_vehicles",
+        select:"name tracking_number in_transit _id"
     })
     .lean()
     .exec() as WarehouseInterface;

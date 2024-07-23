@@ -4,14 +4,10 @@ import { VehicleInterface } from "./vehicle.types";
 
 export const getAllVehicles = async (freight_id:string)=>{
     const Vehicle_query = await VehicleModel
-    .find({freight_company_id: freight_id})
+    .find({freight_company: freight_id})
     .populate({
         path: "freight_company",
         select:"_id company_name"
-    })
-    .populate({
-        path: "warehouse",
-        select:"_id name"
     })
     .populate({
         path: "driver",
@@ -21,6 +17,7 @@ export const getAllVehicles = async (freight_id:string)=>{
         path: "shipment",
         select:"_id name tracking_number"
     })
+    
     .lean()
     .exec() as VehicleInterface[];
     return Vehicle_query;
@@ -33,10 +30,6 @@ export const getVehicle = async (id:string)=>{
     .populate({
         path: "freight_company",
         select:"_id company_name"
-    })
-    .populate({
-        path: "warehouse",
-        select:"_id name"
     })
     .populate({
         path: "driver",
@@ -58,10 +51,6 @@ export const getVehicleByName = async (name:string)=>{
     .populate({
         path: "freight_company",
         select:"_id company_name"
-    })
-    .populate({
-        path: "warehouse",
-        select:"_id name"
     })
     .populate({
         path: "driver",

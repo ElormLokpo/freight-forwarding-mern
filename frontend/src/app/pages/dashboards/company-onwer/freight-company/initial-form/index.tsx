@@ -25,7 +25,7 @@ const CoFreigntCompanyCreateInitial = () => {
             <span className="dark:text-indigo-500">Shipper</span>{" "}
             <span className="font-light"> &gt; Freight Company </span>
           </div>
-          <CoFreightCompanyInitialForm />
+          <CoFreightCompanyInitialForm skipStep={true}/>
         </m.div>
 
 

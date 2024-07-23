@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express";
 import Controller from "../../../interfaces/controllers.interface";
-import {addWarehouseStaff, getWarehouseStaff, getAllWarehouseStaff, getWarehouseStaffByName} from "./warehouse.staff.service"
+import {addWarehouseStaff, getWarehouseStaff, getAllWarehouseStaffWarehouse, getAllWarehouseStaffFreight, getWarehouseStaffByName} from "./warehouse.staff.service"
 import { WarehouseStaffInterface, UpdateWarehouseStaffRequestType } from "./warehouse.staff.types";
 import { RequestType, ResponseType } from "../../../types";
 import { WarehouseStaffModel } from "./warehouse.staff.model";
@@ -15,16 +15,31 @@ class WarehouseStaffStaffController implements Controller{
     }
 
     private initializeRoutes(){
-        this.router.get(`${this.path}/all`, this.getAllWarehouseStaff);
+        this.router.get(`${this.path}/all/freight/:id`, this.getAllWarehouseStaffFreight);
+        this.router.get(`${this.path}/all/warehouse/:id`, this.getAllWarehouseStaffWarehouse);
+
         this.router.post(`${this.path}`, this.addWarehouseStaff)
-        this.router.get(`${this.path}/id`, this.getWarehouseStaff);
-        this.router.get(`${this.path}/name`, this.getWarehouseStaffByName);
+        this.router.get(`${this.path}/:id`, this.getWarehouseStaff);
+        this.router.get(`${this.path}/:name`, this.getWarehouseStaffByName);
         this.router.patch(`${this.path}`, this.updateWarehouseStaff);
         this.router.delete(`${this.path}`, this.deleteWarehouseStaff)
     }
 
-    private async getAllWarehouseStaff(req:RequestType<string>, res: Response, next:NextFunction){
-        const WarehouseStaff_query:WarehouseStaffInterface[] = await getAllWarehouseStaff(req.body.payload);
+    private async getAllWarehouseStaffFreight(req:Request, res: Response, next:NextFunction){
+        const WarehouseStaff_query:WarehouseStaffInterface[] = await getAllWarehouseStaffFreight(req.params.id);
+
+        const response:ResponseType<WarehouseStaffInterface[]>  =
+        {
+            success:true, 
+            message:"Warehouse Staff query successful",
+            data: WarehouseStaff_query
+        } 
+        res.status(200).json(response);
+        
+    }
+
+    private async getAllWarehouseStaffWarehouse(req:Request, res: Response, next:NextFunction){
+        const WarehouseStaff_query:WarehouseStaffInterface[] = await getAllWarehouseStaffWarehouse(req.params.id);
 
         const response:ResponseType<WarehouseStaffInterface[]>  =
         {
@@ -37,7 +52,7 @@ class WarehouseStaffStaffController implements Controller{
     }
 
     private async getWarehouseStaff(req:RequestType<string>, res: Response, next:NextFunction){
-        const WarehouseStaff_query:WarehouseStaffInterface = await getWarehouseStaff(req.body.payload);
+        const WarehouseStaff_query:WarehouseStaffInterface = await getWarehouseStaff(req.params.id);
 
         const response:ResponseType<WarehouseStaffInterface>  =
         {
@@ -50,7 +65,7 @@ class WarehouseStaffStaffController implements Controller{
     }
 
     private async getWarehouseStaffByName(req:RequestType<string>, res: Response, next:NextFunction){
-        const WarehouseStaff_query:WarehouseStaffInterface = await getWarehouseStaffByName(req.body.payload);
+        const WarehouseStaff_query:WarehouseStaffInterface = await getWarehouseStaffByName(req.params.name);
 
         const response:ResponseType<WarehouseStaffInterface>  =
         {
@@ -63,7 +78,7 @@ class WarehouseStaffStaffController implements Controller{
     }
 
     private async addWarehouseStaff(req: RequestType<WarehouseStaffInterface>, res: Response, next:NextFunction){
-        const WarehouseStaff_mutation:WarehouseStaffInterface = await addWarehouseStaff(req.body);
+        const WarehouseStaff_mutation:WarehouseStaffInterface = await addWarehouseStaff(req.body.payload);
 
 
         const response:ResponseType<WarehouseStaffInterface>  =

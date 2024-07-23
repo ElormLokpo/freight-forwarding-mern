@@ -5,7 +5,21 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 const initialState: FreightInitialStateValueType = {
     value:{
         all_freight_companies: [],
-        current_freight_company: null,
+        current_freight_company:{
+            _id: "",
+            company_name: null,
+            address: {
+                country:null,
+                city:null,
+                gps_location:null,
+            },
+            email:null,
+            phone:null,
+            urls: [],
+            owner: null,
+            warehouses: [],
+            current_shipment: []
+        }
     }
 }
 

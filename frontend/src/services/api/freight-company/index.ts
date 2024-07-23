@@ -25,14 +25,15 @@ export const freightCompanyApi = createApi({
         getFreightCompaniesByOnwer: builder.query<FreightCompanyInterface[] | null, string>({
           queryFn: async (args, {dispatch}, _extraOptions, baseQuery)=>{
             const response = await baseQuery({
-                url: `freight-company/${args}`,
+                url: `freight-company/all/owner/${args}`,
                 method: "GET",
             });
 
             if (response.data){
                 const {data: freight_companies} = response.data as ResponseType<FreightCompanyInterface[]>
-
-                const freight_company_dispatch = await dispatch(storeAllFreightCompanies(freight_companies));
+                console.log(freight_companies);
+                
+                await dispatch(storeAllFreightCompanies(freight_companies));
                 return {data: freight_companies}
             }
         

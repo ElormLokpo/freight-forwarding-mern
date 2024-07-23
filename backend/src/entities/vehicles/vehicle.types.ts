@@ -3,14 +3,17 @@ export interface VehicleInterface{
     name?:string, 
     number_plate?:string,
     tracking_number?:number, 
-    warehouse?:any,
+  
     max_capacity?:{
         units?:string, 
-        weightValue?:string, 
-        heightValue?:string,
+        weightValue?:number, 
+        heightValue?:number,
     }
     is_full?:boolean, 
-    driver?:any, 
+    driver?:{
+        fullname?:string,
+        license_number?:string
+    }, 
     shipment?:string[],
     freight_company?:string,
     pickups?:any[],

@@ -16,7 +16,7 @@ class WarehouseController implements Controller{
     }
 
     private initializeRoutes(){
-        this.router.get(`${this.path}/all`, this.getAllWarehouses);
+        this.router.get(`${this.path}/all/:id`, this.getAllWarehouses);
         this.router.post(`${this.path}`, this.addWarehouse)
         this.router.get(`${this.path}/id`, this.getWarehouse);
         this.router.get(`${this.path}/name`, this.getWarehouseByName);
@@ -24,8 +24,8 @@ class WarehouseController implements Controller{
         this.router.delete(`${this.path}`, this.deleteWarehouse);
        }
 
-       private async getAllWarehouses(req:RequestType<string>, res: Response, next:NextFunction){
-        const warehouse_query:WarehouseInterface[] = await getAllWarehouses(req.body.payload);
+       private async getAllWarehouses(req:Request, res: Response, next:NextFunction){
+        const warehouse_query:WarehouseInterface[] = await getAllWarehouses(req.params.id);
 
         const response:ResponseType<WarehouseInterface[]>  =
         {

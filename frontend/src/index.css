@@ -67,3 +67,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.table-color{
+  background-color: rgb(139, 45, 45);
+}

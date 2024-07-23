@@ -4,8 +4,8 @@ export interface WarehouseStaffInterface{
     staff_id?:number,
     fullname?:string, 
     phone?:string,
-    email?:string, 
     role?:string, 
+    freight_company_id?:string
 
 }
 

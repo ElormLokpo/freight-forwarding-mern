@@ -33,14 +33,14 @@ export const authApi = createApi({
 
                 if (response.data){
                     const {data:payload} = response.data as ResponseType<AuthResponseDataType>
-                    dispatch(storeToken(payload))
+                    await dispatch(storeToken(payload))
 
                     const user_response =  await dispatch(userApi.endpoints.getUser.initiate(payload.id)).unwrap();
                     
                     if (user_response.data){
                         const {data: currentUser} = user_response as ResponseType<UserInterface>;
                        
-                        dispatch(storeCurrentUser(currentUser));
+                        await dispatch(storeCurrentUser(currentUser));
                         
                     }
                  
@@ -59,7 +59,8 @@ export const authApi = createApi({
 
                 if (response.data){
                     const {data:payload} = response.data as ResponseType<AuthResponseDataType>;
-                    dispatch(storeToken(payload)); 
+                    console.log("PAYLOAD FROM LGOIN API", payload)
+                    await dispatch(storeToken(payload)); 
 
                     const user_response = await dispatch(userApi.endpoints.getUser.initiate(payload.id));
 

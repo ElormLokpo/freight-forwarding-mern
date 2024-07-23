@@ -8,7 +8,9 @@ export interface WarehouseInterface{
     freight_company_id?: any,
     warehouse_staff?:any[],
     warehouse_vacant?:boolean,
-    current_shipment?:any[]
+    current_shipment?:any[],
+    current_vehicles?:any[]
+
 }
 
 export interface UpdateWarehouseRequestType{

@@ -7,4 +7,5 @@ export interface WarehouseResponseType{
     warehouse_staff?:any[],
     warehouse_vacant?:boolean,
     current_shipment?:any[]
+    current_vehicles?:any[]
 }

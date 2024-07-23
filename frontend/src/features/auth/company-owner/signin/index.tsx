@@ -41,7 +41,7 @@ const CoSignInPage = () => {
   }
 
   const onSubmit = (data: SignInSchemaType) => {
-    console.log(data);
+    
     handleSignInUser(data)
 
     navigate({

@@ -15,8 +15,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "@reduxjs/toolkit/query";
 import { useAddFreightCompanyMutation } from "@/services/api/freight-company";
 import {Link, useNavigate} from "@tanstack/react-router"
+import { IProps } from "./types";
 
-const CoFreightCompanyInitialForm = () => {
+const CoFreightCompanyInitialForm:React.FC<IProps> = (props) => {
    const [addFreightCompany, {isLoading}] = useAddFreightCompanyMutation();
    const currentUserId = useSelector((state:any)=> state.coAuth.value.tokens.id);
 
@@ -52,8 +53,10 @@ const CoFreightCompanyInitialForm = () => {
       handleSubmit(data);
   };
 
+  const className = `dark:bg-gray-900 bg-white rounded p-3 ${props.width ? props.width : "w-[45rem]"}`
+
   return (
-    <div className="dark:bg-gray-900 bg-white rounded p-3 w-[45rem]">
+    <div className={className}>
       <div></div>
 
       <div>
@@ -182,7 +185,10 @@ const CoFreightCompanyInitialForm = () => {
             </div>
 
             <div className="flex justify-center items-center">
-                <Link to="/dashboards/co/warehouses" className="underline dark:text-gray-300 text-sm">Skip this step for now</Link> 
+              {
+                props.skipStep ? <Link to="/dashboards/co/warehouses" className="underline dark:text-gray-300 text-sm">Skip this step for now</Link> 
+                :null
+              }
             </div>
           </form>
         </Form>

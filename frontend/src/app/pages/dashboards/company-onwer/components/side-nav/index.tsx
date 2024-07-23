@@ -11,19 +11,22 @@ import Logo from "@/app/components/logo";
 import { co_route as route } from "@/constants/routes";
 import { NavLink } from "@/app/components/nav-link";
 import ThemeDropDown from "@/app/components/theme-dropdown";
+import { FreightCompanyDropDown } from "../freight-companies-dropdown";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 
 const CoSideNav = () => {
-
   let navStyle =
     "font-semibold dark:text-gray-200 mb-2 flex gap-2 items-center hover:bg-gray-700 hover:rounded  py-2 px-2 hover:text-white hover:cursor-pointer";
   let activeStyle = "bg-black dark:bg-indigo-500 text-white rounded";
+
   return (
     <div className="flex flex-col h-full justify-between p-2 text-sm">
       <div className="text-gray-600">
-        <div className="mb-6 p-2">
+        <div className="mb-6 p-2 flex justify-between">
           <Logo />
-          
+
+          <ThemeDropDown />
         </div>
 
         <div>
@@ -37,16 +40,11 @@ const CoSideNav = () => {
             </p>
             <p>Home</p>
           </NavLink>
-          <NavLink
-            to={route.freight_company}
-            styleName={navStyle}
-            activeStyle={activeStyle}
-          >
-            <p>
-              <FaRegBuilding />
-            </p>
-            <p>Freight Companies</p>
-          </NavLink>
+
+          <div className="mb-4">
+            <FreightCompanyDropDown />
+          </div>
+
           <NavLink
             to={route.warehouse}
             styleName={navStyle}
@@ -101,8 +99,6 @@ const CoSideNav = () => {
             <p>Settings</p>
           </NavLink>
 
-          
-
           <NavLink
             to={route.shipment}
             styleName={navStyle}
@@ -113,17 +109,15 @@ const CoSideNav = () => {
             </p>
             <p>Search</p>
           </NavLink>
-
-          <ThemeDropDown />
         </div>
       </div>
 
       <div className="text-gray-600">
         <div className="font-semibold flex gap-2 items-center py-2 px-2 hover:cursor-pointer">
-          <p className="rounded">
-            {" "}
-            <img src="https://placehold.co/200x200" className="rounded-full" />
-          </p>
+          <Avatar>
+            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
 
           <div>
             <p className="">userone@gmail.com</p>

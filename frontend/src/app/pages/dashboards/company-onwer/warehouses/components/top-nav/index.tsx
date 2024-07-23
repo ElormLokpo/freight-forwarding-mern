@@ -1,5 +1,8 @@
 import { MainButton } from "@/app/components/button";
-import { FaCirclePlus } from "react-icons/fa6";
+import { RightSheet } from "@/app/components/right-sheet";
+
+import { FiPlusCircle } from "react-icons/fi";
+import { AddWarehouseForm } from "../forms";
 
 const WTopNav = () => {
   return (
@@ -7,14 +10,14 @@ const WTopNav = () => {
       <div className="font-semibold flex items-center dark:text-gray-200">Warehouses </div>
 
       <div>
-        <MainButton>
-          <div className="flex gap-2 items-center">
-            <p>
-              <FaCirclePlus />
-            </p>
-            <p>Add Warehouse</p>
-          </div>
-        </MainButton>
+        <RightSheet 
+        triggerButtonName="Add Warehouse" 
+        icon={<FiPlusCircle />}
+        sheetTitle="Add Warehouse"
+        sheetDescription="Carefully fill out form to add warehouse to freight company"
+        form = {<AddWarehouseForm />}
+        />
+       
       </div>
     </div>
   );

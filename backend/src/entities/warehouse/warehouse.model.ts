@@ -45,6 +45,13 @@ WarehouseSchema.virtual("current_shipment",{
     justOne:false
 })
 
+WarehouseSchema.virtual("current_vehicles",{
+    ref:"VehicleModel",
+    localField:"_id",
+    foreignField:"current_warehouse", 
+    justOne: false
+})
+
 WarehouseSchema.set("toJSON",{virtuals:true});
 WarehouseSchema.set("toObject",{virtuals:true});
 

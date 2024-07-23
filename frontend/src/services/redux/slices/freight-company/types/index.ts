@@ -1,13 +1,13 @@
 export interface FreightCompanyInterface {
-    _id?: string
-    company_name?: string
+    _id?: string 
+    company_name?: string | null
     address?: {
-        country?:string 
-        city?:string 
-        gps_location?:string
+        country?:string | null 
+        city?:string | null 
+        gps_location?:string | null
     }
-    email?:string 
-    phone?:string
+    email?:string | null 
+    phone?:string | null
     urls?:string[]
     owner?:any
     warehouses?: any[],

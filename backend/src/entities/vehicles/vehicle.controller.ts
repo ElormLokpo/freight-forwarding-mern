@@ -16,7 +16,7 @@ class VehicleController implements Controller{
     }
 
     private initializeRoutes(){
-        this.router.get(`${this.path}/all`, this.getAllVehicles);
+        this.router.get(`${this.path}/all/:id`, this.getAllVehicles);
         this.router.post(`${this.path}`, this.addVehicle)
         this.router.get(`${this.path}/id`, this.getVehicle);
         this.router.get(`${this.path}/name`, this.getVehicleByName);
@@ -25,7 +25,7 @@ class VehicleController implements Controller{
        }
 
        private async getAllVehicles(req:RequestType<string>, res: Response, next:NextFunction){
-        const vehicle_query:VehicleInterface[] = await getAllVehicles(req.body.payload);
+        const vehicle_query:VehicleInterface[] = await getAllVehicles(req.params.id);
 
         const response:ResponseType<VehicleInterface[]>  =
         {
