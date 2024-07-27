@@ -31,6 +31,8 @@ const ShippingCostSchema = new mongoose.Schema({
 const ShipmentSchema = new mongoose.Schema({
     _id:{type:String},
     name: {type:String},
+    quantity: {type:Number},
+    quantity_unit:{type:String},
     tracking_number:{type:Number},
     description:{type:String},
     weight_height:WeightHeightSchema,
@@ -39,21 +41,24 @@ const ShipmentSchema = new mongoose.Schema({
     final_destination: FinalDestination,
     current_warehouse:{
         type:String, 
-        ref:"WarehouseModel"
+        ref:"WarehouseModel",
+       
     },
     warehouse_trail:[{
         type:String, 
-        ref: "Warehouse"
+        ref: "WarehouseModel"
     }],
     current_vehicle:{
         type:String,
         ref:"VehicleModel"
     },
+    is_assigned:{type:Boolean,default:false},
     delivery_status:{type:String},
     processed_by:{
         type:String, 
         ref: "UserModel"
     },
+    in_transit:{type:Boolean, default:false},
     status: {type:String},
     freight_company:{
         type:String, 

@@ -11,6 +11,7 @@ const CoWarehousePage = () => {
   const currentCompanyId:string = useSelector((state:any)=>state.freightCompany.value.current_freight_company._id)
   const {data ,isLoading} = useGetAllWarehousesQuery(currentCompanyId);
 
+  
 
 
   return (

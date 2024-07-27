@@ -6,7 +6,8 @@ export const co_route = {
     shipment:`${co_route_base}shipment`,
     vehicle:`${co_route_base}vehicle`,
     warehouse:`${co_route_base}warehouses`,
-    warehouse_staff: `${co_route_base}warehouse-staff`
+    warehouse_staff: `${co_route_base}warehouse-staff`,
+    warehouse_planner: `${co_route_base}planner/warehouse-planner`
 }
 
 const co_auth_base = "/co/"

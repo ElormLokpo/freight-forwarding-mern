@@ -34,9 +34,20 @@ const CoSignInPage = () => {
   });
 
   const handleSignInUser = async (data: SignInSchemaType)=>{
-    const response = signIn({payload:data});
+    const response = await signIn({payload:data});
 
-    toast.success("Sign in successful")
+   
+    if (response.data == false){
+      toast.error("Incorrect Password")
+    }
+
+    if(response.data==true){
+      toast.success("Sign in successful")
+
+       navigate({
+        to:"/dashboards/co/warehouses"
+      })
+    }
 
   }
 
@@ -44,9 +55,7 @@ const CoSignInPage = () => {
     
     handleSignInUser(data)
 
-    navigate({
-      to:"/dashboards/co/warehouses"
-    })
+   
    
   };
 

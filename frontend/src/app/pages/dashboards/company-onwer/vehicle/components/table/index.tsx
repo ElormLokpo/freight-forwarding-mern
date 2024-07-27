@@ -5,7 +5,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 import DelEditComponent from "@/app/components/del-edit";
 import { VehicleResponseType } from "@/services/api/vehicle/types";
 
-const CoWarehouseTable: React.FC<IProps> = (props) => {
+const CoVehicleTable: React.FC<IProps> = (props) => {
   const columnHelper = createColumnHelper<VehicleResponseType>();
 
   const columns = [
@@ -69,4 +69,4 @@ const CoWarehouseTable: React.FC<IProps> = (props) => {
   );
 };
 
-export default CoWarehouseTable;
+export default CoVehicleTable;

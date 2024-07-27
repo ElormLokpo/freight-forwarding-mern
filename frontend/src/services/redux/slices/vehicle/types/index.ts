@@ -19,8 +19,8 @@ export interface VehicleInterface{
 
 export interface VehicleInitialStateValueType {
     value:{
-        all_warehousestaff: VehicleInterface[],
-        current_warehousestaff: VehicleInterface | null,
+        all_vehicle: VehicleInterface[],
+        current_vehicle: VehicleInterface | null,
     }
 
 }

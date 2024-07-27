@@ -1,6 +1,8 @@
 export interface ShipmentInterface{
     _id?:any,
     name?:string, 
+    quantity?:number,
+    quantity_unit?:string,
     tracking_number?:string,
     description?:string, 
     weight_height?:{
@@ -17,12 +19,14 @@ export interface ShipmentInterface{
         city?:string,
         gps?:string
     },
-    current_warehouse?:string, 
-    current_vehicle?:string, 
+    in_transit?:boolean,
+    is_assigned?:boolean,
+    current_warehouse?:any, 
+    current_vehicle?:any, 
     delivery_status?:string, 
     processed_by?: string, 
     freight_company?:string, 
-    warehouse_trail?:string[]
+    warehouse_trail?:any[]
     shipping_cost?:{
         currency?:string, 
         amount?: number

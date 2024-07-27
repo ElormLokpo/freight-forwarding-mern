@@ -12,8 +12,8 @@ import { co_route as route } from "@/constants/routes";
 import { NavLink } from "@/app/components/nav-link";
 import ThemeDropDown from "@/app/components/theme-dropdown";
 import { FreightCompanyDropDown } from "../freight-companies-dropdown";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { GoTasklist } from "react-icons/go";
 
 const CoSideNav = () => {
   let navStyle =
@@ -55,15 +55,31 @@ const CoSideNav = () => {
             </p>
             <p>Warehouses</p>
           </NavLink>
+
+          <NavLink
+            to={route.warehouse_planner}
+            styleName={navStyle}
+            activeStyle={activeStyle}
+          >
+            <div className="pl-5 flex gap-2">
+              <p>
+              <GoTasklist />
+              </p>
+              <p>Warehouse Planner</p>
+            </div>
+          </NavLink>
+
           <NavLink
             to={route.warehouse_staff}
             styleName={navStyle}
             activeStyle={activeStyle}
           >
+            <div className="pl-5 flex gap-2">
             <p>
               <FiUsers />
             </p>
             <p>Warehouses Staff</p>
+            </div>
           </NavLink>
           <NavLink
             to={route.vehicle}
@@ -88,22 +104,14 @@ const CoSideNav = () => {
         </div>
 
         <div className="border-t py-2">
-          <NavLink
-            to={route.shipment}
-            styleName={navStyle}
-            activeStyle={activeStyle}
-          >
+          <NavLink to="" styleName={navStyle}>
             <p>
               <LuSettings />
             </p>
             <p>Settings</p>
           </NavLink>
 
-          <NavLink
-            to={route.shipment}
-            styleName={navStyle}
-            activeStyle={activeStyle}
-          >
+          <NavLink to="" styleName={navStyle}>
             <p>
               <IoMdSearch />
             </p>

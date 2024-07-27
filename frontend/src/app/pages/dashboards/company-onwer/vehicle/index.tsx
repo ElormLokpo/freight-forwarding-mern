@@ -3,7 +3,7 @@ import WTopNav from './components/top-nav'
 import { useSelector, useDispatch } from 'react-redux';
 import { useGetAllVehiclesQuery } from '@/services/api';
 import { FreightCompanyInterface } from '@/services/redux/slices/freight-company/types';
-import CoWarehouseTable from './components/table';
+import CoVehicleTable from './components/table';
 
 
 
@@ -25,7 +25,7 @@ const CoVehiclePage = () => {
           <p>Loading...</p>
         </>:<>
 
-          <CoWarehouseTable data = {data}/>
+          <CoVehicleTable data = {data}/>
         
         </>
       }

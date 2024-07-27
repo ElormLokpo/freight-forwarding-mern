@@ -19,6 +19,8 @@ import { Route as CoAuthLayoutCoSigninRouteImport } from './routes/_coAuthLayout
 import { Route as CoLayoutDashboardsCoWarehousesRouteImport } from './routes/_coLayout/dashboards/co/warehouses/route'
 import { Route as CoLayoutDashboardsCoWarehouseStaffRouteImport } from './routes/_coLayout/dashboards/co/warehouse-staff/route'
 import { Route as CoLayoutDashboardsCoVehicleRouteImport } from './routes/_coLayout/dashboards/co/vehicle/route'
+import { Route as CoLayoutDashboardsCoShipmentRouteImport } from './routes/_coLayout/dashboards/co/shipment/route'
+import { Route as CoLayoutDashboardsCoPlannerWarehousePlannerRouteImport } from './routes/_coLayout/dashboards/co/planner/warehouse-planner/route'
 
 // Create/Update Routes
 
@@ -65,6 +67,18 @@ const CoLayoutDashboardsCoVehicleRouteRoute =
     getParentRoute: () => CoLayoutRoute,
   } as any)
 
+const CoLayoutDashboardsCoShipmentRouteRoute =
+  CoLayoutDashboardsCoShipmentRouteImport.update({
+    path: '/dashboards/co/shipment',
+    getParentRoute: () => CoLayoutRoute,
+  } as any)
+
+const CoLayoutDashboardsCoPlannerWarehousePlannerRouteRoute =
+  CoLayoutDashboardsCoPlannerWarehousePlannerRouteImport.update({
+    path: '/dashboards/co/planner/warehouse-planner',
+    getParentRoute: () => CoLayoutRoute,
+  } as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -104,6 +118,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CoAuthLayoutCoSignupRouteImport
       parentRoute: typeof CoAuthLayoutImport
     }
+    '/_coLayout/dashboards/co/shipment': {
+      id: '/_coLayout/dashboards/co/shipment'
+      path: '/dashboards/co/shipment'
+      fullPath: '/dashboards/co/shipment'
+      preLoaderRoute: typeof CoLayoutDashboardsCoShipmentRouteImport
+      parentRoute: typeof CoLayoutImport
+    }
     '/_coLayout/dashboards/co/vehicle': {
       id: '/_coLayout/dashboards/co/vehicle'
       path: '/dashboards/co/vehicle'
@@ -125,6 +146,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CoLayoutDashboardsCoWarehousesRouteImport
       parentRoute: typeof CoLayoutImport
     }
+    '/_coLayout/dashboards/co/planner/warehouse-planner': {
+      id: '/_coLayout/dashboards/co/planner/warehouse-planner'
+      path: '/dashboards/co/planner/warehouse-planner'
+      fullPath: '/dashboards/co/planner/warehouse-planner'
+      preLoaderRoute: typeof CoLayoutDashboardsCoPlannerWarehousePlannerRouteImport
+      parentRoute: typeof CoLayoutImport
+    }
   }
 }
 
@@ -136,9 +164,11 @@ export const routeTree = rootRoute.addChildren({
     CoAuthLayoutCoSignupRouteRoute,
   }),
   CoLayoutRoute: CoLayoutRoute.addChildren({
+    CoLayoutDashboardsCoShipmentRouteRoute,
     CoLayoutDashboardsCoVehicleRouteRoute,
     CoLayoutDashboardsCoWarehouseStaffRouteRoute,
     CoLayoutDashboardsCoWarehousesRouteRoute,
+    CoLayoutDashboardsCoPlannerWarehousePlannerRouteRoute,
   }),
   CoCompanyInitialRouteRoute,
 })
@@ -166,9 +196,11 @@ export const routeTree = rootRoute.addChildren({
     "/_coLayout": {
       "filePath": "_coLayout.tsx",
       "children": [
+        "/_coLayout/dashboards/co/shipment",
         "/_coLayout/dashboards/co/vehicle",
         "/_coLayout/dashboards/co/warehouse-staff",
-        "/_coLayout/dashboards/co/warehouses"
+        "/_coLayout/dashboards/co/warehouses",
+        "/_coLayout/dashboards/co/planner/warehouse-planner"
       ]
     },
     "/co/company-initial": {
@@ -182,6 +214,10 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_coAuthLayout/co/signup/route.tsx",
       "parent": "/_coAuthLayout"
     },
+    "/_coLayout/dashboards/co/shipment": {
+      "filePath": "_coLayout/dashboards/co/shipment/route.tsx",
+      "parent": "/_coLayout"
+    },
     "/_coLayout/dashboards/co/vehicle": {
       "filePath": "_coLayout/dashboards/co/vehicle/route.tsx",
       "parent": "/_coLayout"
@@ -192,6 +228,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_coLayout/dashboards/co/warehouses": {
       "filePath": "_coLayout/dashboards/co/warehouses/route.tsx",
+      "parent": "/_coLayout"
+    },
+    "/_coLayout/dashboards/co/planner/warehouse-planner": {
+      "filePath": "_coLayout/dashboards/co/planner/warehouse-planner/route.tsx",
       "parent": "/_coLayout"
     }
   }

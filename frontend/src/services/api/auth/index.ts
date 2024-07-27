@@ -49,29 +49,41 @@ export const authApi = createApi({
                 return response.data as {data: ResponseType<AuthResponseDataType>}
             }
         }),
-        signin:builder.mutation<ResponseType<AuthResponseDataType>, AuthRequestDataType<SignInSchemaType>>({
+        signin:builder.mutation<Boolean, AuthRequestDataType<SignInSchemaType>>({
             queryFn: async (args, {dispatch}, _extraOptions, baseQuery)=>{
-                const response = await baseQuery({
+                const response:any = await baseQuery({
                     url:"auth/login", 
                     method: "POST",
                     body: args
                 });
 
                 if (response.data){
-                    const {data:payload} = response.data as ResponseType<AuthResponseDataType>;
-                    console.log("PAYLOAD FROM LGOIN API", payload)
-                    await dispatch(storeToken(payload)); 
+                  
+                    if(response.data.success==true){
+                        const {data:payload} = response.data as ResponseType<AuthResponseDataType>;
+                       
+                        await dispatch(storeToken(payload)); 
 
-                    const user_response = await dispatch(userApi.endpoints.getUser.initiate(payload.id));
+                        const user_response = await dispatch(userApi.endpoints.getUser.initiate(payload.id));
 
-                    if (user_response.data){
-                          const {data: currentUser} = user_response.data as ResponseType<UserInterface>;
-                          dispatch(storeCurrentUser(currentUser));
+                        if (user_response.data){
+                                const {data: currentUser} = user_response.data as ResponseType<UserInterface>;
+                                dispatch(storeCurrentUser(currentUser));
+
+                                return {data:true};
+                        }
                     }
+
+                    if(response.data.success == false){
+                        return {data:false}
+                        
+                    }
+
+                   
                   
                 }
 
-                return response.data as {data: ResponseType<AuthResponseDataType>}
+                return {data:false}
             }
         })
     })

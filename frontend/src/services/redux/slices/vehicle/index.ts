@@ -3,20 +3,20 @@ import { VehicleInitialStateValueType, VehicleInterface } from "./types";
 
 const initialState:VehicleInitialStateValueType = {
     value:{
-        all_warehousestaff:[],
-        current_warehousestaff:null,
+        all_vehicle:[],
+        current_vehicle:null,
     }
 }
 
 export const vehicleSlice = createSlice({
-  name: "warehouseStaffSlice",
+  name: "vehicleSlice",
   initialState, 
   reducers:{
     storeAllVehicle: (state, action: PayloadAction<VehicleInterface[]>)=>{
-        state.value.all_warehousestaff = action.payload
+        state.value.all_vehicle = action.payload
     },
     storeCurrentVehicle: (state, action:PayloadAction<VehicleInterface>)=>{
-        state.value.current_warehousestaff = action.payload
+        state.value.current_vehicle = action.payload
     }
   }  
 })

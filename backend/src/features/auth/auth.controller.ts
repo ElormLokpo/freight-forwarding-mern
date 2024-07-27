@@ -14,7 +14,8 @@ import WrongPasswordException from "../../exceptions/auth/wrong.password.excepti
 import InvalidTokenException from "../../exceptions/auth/invalid.token.exception";
 import UserAlreadyExistsException from "../../exceptions/auth/user.exists.exception";
 import { RequestType, ResponseType } from "types";
-import { UserInterface } from "entities/user/users.types";
+import { UserInterface } from "../../entities/user/users.types";
+import { errorHelper } from "../../helpers/error-helper";
 
 class AuthController implements Controller{
     public path = "/auth"
@@ -89,11 +90,13 @@ class AuthController implements Controller{
         const user_query:UserInterface = await findUserByEmailSelect(email);
 
         if(!email || !password){
-            next(new EmptyFieldException())
+           errorHelper(false, "Email or Password required", res, next);
+           next()
         }
 
         if(!user_query){
-            next(new UserNotFoundException(email))
+           errorHelper(false, "User with email not found", res, next);
+           next()   
         }
         
         // if(user_query.verify_email.email_verfied===false){
@@ -103,30 +106,33 @@ class AuthController implements Controller{
 
         const valid_password:boolean = await bcrypt.compare(password, user_query.passwordHash);
         if (!valid_password){
-            next(new WrongPasswordException())
+            errorHelper(false, "Incorrect password", res, next);
+           
+        }else{
+            const token:string = createToken(user_query._id);
+            const refreshToken = createRefreshToken(user_query._id);
+    
+            //res.setHeader("Set-Cookie",[createCookie(token)]);
+    
+            const response_data:AuthResponseDataType = {
+                id: user_query._id, 
+                access_token : token ,
+                refresh_token: refreshToken
+            }
+    
+    
+            const response:ResponseType<AuthResponseDataType> = {
+                success: true, 
+                message: "User login success",
+                data: response_data
+            }
+    
+            res.status(200).json(response)
+            next()
+    
         }
 
-        const token:string = createToken(user_query._id);
-        const refreshToken = createRefreshToken(user_query._id);
-
-        //res.setHeader("Set-Cookie",[createCookie(token)]);
-
-        const response_data:AuthResponseDataType = {
-            id: user_query._id, 
-            access_token : token ,
-            refresh_token: refreshToken
-        }
-
-
-        const response:ResponseType<AuthResponseDataType> = {
-            success: true, 
-            message: "User login success",
-            data: response_data
-        }
-
-        res.status(200).json(response)
-        next()
-
+      
 
     }
 

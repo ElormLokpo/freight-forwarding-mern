@@ -18,10 +18,10 @@ export const vehicleApi = createApi({
                 })
 
                 if(response.data){
-                    const {data:warehouseStaff} = response.data as ResponseType<VehicleResponseType[]>
-                    await dispatch(storeAllVehicle(warehouseStaff));
+                    const {data:vehcile} = response.data as ResponseType<VehicleResponseType[]>
+                    await dispatch(storeAllVehicle(vehcile));
 
-                    return {data: warehouseStaff};
+                    return {data: vehcile};
                 }
 
                 return {data: []}
