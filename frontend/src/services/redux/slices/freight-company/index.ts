@@ -28,10 +28,10 @@ export const FreihgtcompanySlice = createSlice({
     name:"FreightCompanySlice",
     initialState,
     reducers:{
-        storeAllFreightCompanies:(state, action:PayloadAction<FreightCompanyInterface[]>)=>{
+        storeAllFreightCompanies:(state, action:PayloadAction<any>)=>{
             state.value.all_freight_companies =  action.payload  
         },
-        storeCurrentFreightCompany:(state, action: PayloadAction<FreightCompanyInterface>)=>{
+        storeCurrentFreightCompany:(state, action: PayloadAction<any>)=>{
             state.value.current_freight_company = action.payload
         }
     }

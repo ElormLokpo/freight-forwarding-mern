@@ -5,6 +5,9 @@ import { SignInSchemaType, SignUpSchemaType } from "@/lib/schema"
 import { AuthRequestDataType, AuthResponseDataType, GetUserRequstType } from "./types"
 import { storeCurrentUser, storeToken } from "@/services/redux"
 import { UserInterface } from "@/services/redux/slices/auth/co/types"
+import { freightCompanyApi } from "../freight-company"
+import { storeAllFreightCompanies, storeCurrentFreightCompany } from "@/services/redux/slices/freight-company"
+import { FreightCompanyInterface } from "@/services/redux/slices/freight-company/types"
 
 export const userApi = createApi({
     reducerPath : "userApi",
@@ -65,6 +68,15 @@ export const authApi = createApi({
                         await dispatch(storeToken(payload)); 
 
                         const user_response = await dispatch(userApi.endpoints.getUser.initiate(payload.id));
+                        const freight_companies = await dispatch(freightCompanyApi.endpoints.getFreightCompaniesByOnwer.initiate(payload.id));
+                        
+                       
+
+                        if (Array.isArray(freight_companies.data)){
+                            await dispatch(storeAllFreightCompanies(freight_companies.data))
+                            await dispatch(storeCurrentFreightCompany(freight_companies.data[0]))
+                        }
+                       
 
                         if (user_response.data){
                                 const {data: currentUser} = user_response.data as ResponseType<UserInterface>;

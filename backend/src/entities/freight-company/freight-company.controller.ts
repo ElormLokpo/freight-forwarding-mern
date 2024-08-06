@@ -4,6 +4,7 @@ import Controller from "../../interfaces/controllers.interface";
 import { RequestType, ResponseType } from "../../types";
 import { FreightCompanyInterface, UpdateFreightCompanyRequestType } from "./freight-company.types";
 import { FreightCompanyModel } from "./freight-company.model";
+import { isAuthenticatedMiddleware, isFreightCompanyOwnerMiddleware } from "../../middleware/authorization";
 
 class FreightCompanyController implements Controller{
 
@@ -16,11 +17,11 @@ class FreightCompanyController implements Controller{
 
     private initializeRoutes(){
         this.router.get(`${this.path}/all`, this.getAllFreightCompanies);
-        this.router.post(`${this.path}`, this.addFreightCompany)
-        this.router.get(`${this.path}/id`, this.getFreightCompany);
+        this.router.post(`${this.path}`, isAuthenticatedMiddleware,this.addFreightCompany)
+        this.router.get(`${this.path}/:id`, this.getFreightCompany);
         this.router.get(`${this.path}/name`, this.getFreightCompanyByName);
-        this.router.patch(`${this.path}`, this.updateFreightCompany);
-        this.router.delete(`${this.path}`, this.deleteFreightCompany);
+        this.router.patch(`${this.path}/:id`, isFreightCompanyOwnerMiddleware,this.updateFreightCompany);
+        this.router.delete(`${this.path}/:id`, isFreightCompanyOwnerMiddleware,this.deleteFreightCompany);
         this.router.get(`${this.path}/all/owner/:id`, this.getAllFreightCompaniesByOwner)
 
 
@@ -95,9 +96,9 @@ class FreightCompanyController implements Controller{
         
     }
 
-    private async updateFreightCompany(req: RequestType<UpdateFreightCompanyRequestType>, res: Response, next:NextFunction){
-        const update_data = req.body.payload.data;
-        const freight_company_mutation:FreightCompanyInterface = await FreightCompanyModel.findByIdAndUpdate(req.body.payload.id, update_data, {new:true})
+    private async updateFreightCompany(req: RequestType<FreightCompanyInterface>, res: Response, next:NextFunction){
+        const update_data = req.body.payload;
+        const freight_company_mutation:FreightCompanyInterface = await FreightCompanyModel.findByIdAndUpdate(req.params.id, update_data, {new:true})
         
 
         const response:ResponseType<FreightCompanyInterface>  =
@@ -111,9 +112,9 @@ class FreightCompanyController implements Controller{
         
     }
 
-    private async deleteFreightCompany(req: RequestType<string>, res: Response, next:NextFunction){
+    private async deleteFreightCompany(req: Request, res: Response, next:NextFunction){
         
-        const freight_company_mutation:FreightCompanyInterface = await FreightCompanyModel.findByIdAndDelete(req.body.payload.id);
+        const freight_company_mutation:FreightCompanyInterface = await FreightCompanyModel.findByIdAndDelete(req.params.id);
 
 
         const response:ResponseType<FreightCompanyInterface>  =

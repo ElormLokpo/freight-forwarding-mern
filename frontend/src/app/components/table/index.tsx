@@ -16,6 +16,9 @@ import {
   getCoreRowModel
 } from "@tanstack/react-table"
 
+import {TableCell as TableCellComp} from "./components/table-cell"
+import { TableRow as TableRowComp } from "./components/table-row";
+
 const TableComponent = <T,>(props: IProps<T>) => {
   const [tableData, setTableData] = useState<any[] >([]);
 
@@ -57,19 +60,9 @@ const TableComponent = <T,>(props: IProps<T>) => {
           
         </TableHeader>
         <TableBody>
-          {
-            table.getRowModel().rows.map(row=>(
-              <TableRow key={row.id}>
-                  {
-                    row.getVisibleCells().map(cell=>(
-                      <TableCell>
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </TableCell>
-                    ))
-                  }
-              </TableRow>
-            ))
-          }
+          
+            <TableRowComp table={table}/>
+          
          
         </TableBody>
       </Table>

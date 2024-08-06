@@ -19,16 +19,21 @@ import {Toaster, toast} from "sonner"
 import { Input } from "@/components/ui/input";
 import { WarehouseSchema, WarehouseSchemaType } from "@/lib/schema/warehouse";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import {useSelector} from "react-redux";
 import { FreightCompanyInterface } from "@/services/redux/slices/freight-company/types";
 import { MainButton } from "@/app/components/button";
 import { FiPlusCircle } from "react-icons/fi";
 import { useAddWarehouseMutation } from "@/services/api";
+import { WarehouseContext } from "../context";
+
 
 
 export const AddWarehouseForm: React.FC = () => {
+  const warehouse_context = useContext(WarehouseContext);
+  
+
   const [addWarehouse,{isLoading}] = useAddWarehouseMutation();
 
   const form = useForm<WarehouseSchemaType>({
@@ -46,6 +51,7 @@ export const AddWarehouseForm: React.FC = () => {
       const response = await addWarehouse({payload:data})
 
       toast.success("Warehouse added successfully");
+     
   }
 
   const onSubmit = (data: WarehouseSchemaType) => {
@@ -54,7 +60,7 @@ export const AddWarehouseForm: React.FC = () => {
 
   return (
     <div className="">
-       <Toaster />
+       <Toaster richColors />
 
 
       <Form {...form}>

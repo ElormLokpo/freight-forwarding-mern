@@ -4,7 +4,7 @@ import express from "express";
 import Controller from "./interfaces/controllers.interface";
 import mongoose from "mongoose";
 import cors from "cors";
-import { errorHandlerMiddleware } from "./middleware/error";
+
 
 class App{
     public app:express.Application;

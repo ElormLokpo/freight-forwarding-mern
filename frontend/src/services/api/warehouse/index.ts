@@ -54,6 +54,8 @@ export const warehouseApi = createApi({
                 })
 
                 if(response.data){
+                
+                   
                     return {data:true}
                 }
 

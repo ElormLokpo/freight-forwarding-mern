@@ -7,15 +7,12 @@ import { generateCode } from "../../helpers/code-gen/code.generation";
 import { sendEmail } from "../../helpers/mail/mail.helper";
 import { UserModel } from "../../entities/user/users.model";
 import jwt from 'jsonwebtoken';
-import UserNotFoundException from "../../exceptions/user/user.not.found.exception";
-import EmptyFieldException from "../../exceptions/auth/empty.fields.exception";
+
 import { AuthResponseDataType, ChangePasswordRequestType, ForgotPasswordRequestType, LoginRequestBody, RegisterRequestBody, VerifyEmailRequestType } from "./auth.types";
-import WrongPasswordException from "../../exceptions/auth/wrong.password.exception";
-import InvalidTokenException from "../../exceptions/auth/invalid.token.exception";
-import UserAlreadyExistsException from "../../exceptions/auth/user.exists.exception";
 import { RequestType, ResponseType } from "types";
 import { UserInterface } from "../../entities/user/users.types";
-import { errorHelper } from "../../helpers/error-helper";
+import { generateResponse } from "../../helpers/response-gen";
+
 
 class AuthController implements Controller{
     public path = "/auth"
@@ -46,7 +43,7 @@ class AuthController implements Controller{
             !req_body.passwordHash ||
             !req_body.role.role 
         ){
-            next(new EmptyFieldException())
+            next()
         }
 
         //sendEmail(req.body.email, "Email Verification Code",`${code_generated}`, "Kindly enter the code provided to verify accout" );
@@ -60,11 +57,11 @@ class AuthController implements Controller{
 
         const created_user = await addUser(create_user_object);
         if(created_user === "User Exists"){
-            next(new UserAlreadyExistsException(req.body.payload.email))
+           next()
         }
 
-        const token = createToken(created_user._id);
-        const refreshToken = createRefreshToken(created_user._id);
+        const token = createToken(created_user._id, created_user.role.role);
+        const refreshToken = createRefreshToken(created_user._id, created_user.role.role);
 
         const response_data:AuthResponseDataType = {
             id: created_user._id, 
@@ -74,11 +71,7 @@ class AuthController implements Controller{
 
         //res.setHeader("Set-Cookie", [createCookie(token)]);
 
-        const response:ResponseType<AuthResponseDataType> = {
-            success: true, 
-            message: "User registered successfully",
-            data: response_data
-        }
+        const response = generateResponse<AuthResponseDataType>(true, "User registered successfully", response_data)
 
 
         res.status(200).json(response)
@@ -90,12 +83,12 @@ class AuthController implements Controller{
         const user_query:UserInterface = await findUserByEmailSelect(email);
 
         if(!email || !password){
-           errorHelper(false, "Email or Password required", res, next);
+       
            next()
         }
 
         if(!user_query){
-           errorHelper(false, "User with email not found", res, next);
+          
            next()   
         }
         
@@ -106,11 +99,11 @@ class AuthController implements Controller{
 
         const valid_password:boolean = await bcrypt.compare(password, user_query.passwordHash);
         if (!valid_password){
-            errorHelper(false, "Incorrect password", res, next);
+           
            
         }else{
-            const token:string = createToken(user_query._id);
-            const refreshToken = createRefreshToken(user_query._id);
+            const token:string = createToken(user_query._id,user_query.role.role);
+            const refreshToken = createRefreshToken(user_query._id, user_query.role.role);
     
             //res.setHeader("Set-Cookie",[createCookie(token)]);
     
@@ -121,11 +114,7 @@ class AuthController implements Controller{
             }
     
     
-            const response:ResponseType<AuthResponseDataType> = {
-                success: true, 
-                message: "User login success",
-                data: response_data
-            }
+            const response = generateResponse<AuthResponseDataType>(true, "User login successful", response_data)
     
             res.status(200).json(response)
             next()
@@ -140,15 +129,15 @@ class AuthController implements Controller{
         const token = req.body.payload;
 
         if (!token){
-            next(new EmptyFieldException())
+            next()
         }
 
         jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err:any, data:any)=>{
             if (err){
-                next(new InvalidTokenException())
+                next()
             }
 
-            const new_token = createToken(data.id)
+            const new_token = createToken(data.id, "")
 
             const response: ResponseType<string> ={
                 success: true, 
@@ -166,14 +155,14 @@ class AuthController implements Controller{
         const user_id:string = req.body.payload.id;
 
         if(!code_from_request || !user_id ){
-            next(new EmptyFieldException())
+           next()
         }
 
        
         const user_query:UserInterface = await UserModel.findById(user_id).select("verify_email.verification_code");
 
         if(!user_query){
-            next(new UserNotFoundException(user_id))
+           next()
         }
         
         if (code_from_request == user_query.verify_email.verification_code){
@@ -214,7 +203,7 @@ class AuthController implements Controller{
         const user_id = req.body.payload.id;
 
         if(!user_id || !user_email){
-            next(new EmptyFieldException())
+           next()
         }
 
         sendEmail(user_email, "Email Verification Code",`${code_generated}`, "Kindly enter the code provided to verify accout" );
@@ -222,7 +211,7 @@ class AuthController implements Controller{
        
         const user_query = await UserModel.findById(user_id).select("account_recovery.recovery_code");
         if(!user_query){
-            next(new UserNotFoundException(user_id))
+           next()
         }
 
         const update_data = {
@@ -250,12 +239,12 @@ class AuthController implements Controller{
         const user_id = req.body.payload.id;
 
         if(!code_from_request || !user_id){
-            next(new EmptyFieldException())
+            next()
         }
         
         const user_query = await UserModel.findById(user_id).select("account_recovery.recovery_code");
         if(!user_query){
-            next(new UserNotFoundException(user_id))
+            next()
         }
         
         if(code_from_request === user_query.account_recovery.recovery_code){
@@ -292,12 +281,12 @@ class AuthController implements Controller{
         const user_id = req.body.payload.id;
 
         if(!new_password || !user_id){
-            next(new EmptyFieldException())
+            next()
         }
 
         const user_query = await UserModel.findById(user_id).select("account_recovery.recovery_code_verified");
         if(!user_query){
-            next(new UserNotFoundException(user_id))
+            next()
         }
 
         if(user_query.account_recovery.recovery_code_verified === true){

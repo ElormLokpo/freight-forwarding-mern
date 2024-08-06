@@ -71,7 +71,12 @@ export const FreightCompanyDropDown = () => {
               
               freightCompanies.length>0? freightCompanies.map((i) => (
                 <DropdownMenuItem onClick={() => handleSelectFreightCompany(i)}>
-                  <p className="text-sm">{i.company_name}</p>
+                  <div className="">
+                  <p className="text-sm font-semibold dark:text-gray-300">{i.company_name}</p>
+
+                 
+
+                  </div>
                 </DropdownMenuItem>
               )):<p className="text-sm p-2">
                   No freight companies to show.

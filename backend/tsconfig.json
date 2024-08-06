@@ -3,6 +3,9 @@
         "module": "NodeNext",
         "moduleResolution": "NodeNext",
         "baseUrl":"./src",
+        "paths":{
+            "@/*":["src/*"]
+        },
         "outDir":"./dist",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,

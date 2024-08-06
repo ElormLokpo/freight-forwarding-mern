@@ -18,12 +18,15 @@ import { motion as m } from "framer-motion";
 import { slideInTop } from "@/animation";
 import { useSigninMutation } from "@/services/api/auth";
 import {toast} from "sonner";
+import { useSelector, useDispatch } from "react-redux";
+import { FreightCompanyInterface } from "@/services/redux/slices/freight-company/types";
 
 
 
 const CoSignInPage = () => {
   const [signIn, {isLoading}] = useSigninMutation();
   const navigate = useNavigate();
+ 
 
   const form = useForm<SignInSchemaType>({
     resolver: zodResolver(SignInSchema),
@@ -44,6 +47,7 @@ const CoSignInPage = () => {
     if(response.data==true){
       toast.success("Sign in successful")
 
+      
        navigate({
         to:"/dashboards/co/warehouses"
       })
@@ -55,8 +59,6 @@ const CoSignInPage = () => {
     
     handleSignInUser(data)
 
-   
-   
   };
 
   return (
