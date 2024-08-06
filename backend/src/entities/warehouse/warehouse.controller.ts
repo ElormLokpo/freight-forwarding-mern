@@ -1,8 +1,8 @@
 import Controller from "../../interfaces/controllers.interface";
 import { NextFunction, Request, Response, Router } from "express";
 import { RequestType, ResponseType } from "../../types";
-import { WarehouseInterface, UpdateWarehouseRequestType } from "./warehouse.types";
-import { getAllWarehouses, getWarehouse, addWarehouse, getWarehouseByName } from "./warehouse.service";
+import { WarehouseInterface, UpdateWarehouseRequestType, WarehouseAssignInterface } from "./warehouse.types";
+import { getAllWarehouses, getWarehouse, addWarehouse, getWarehouseByName, addIncomingShipment } from "./warehouse.service";
 import { WarehouseModel } from "./warehouse.model";
 
 
@@ -16,16 +16,17 @@ class WarehouseController implements Controller{
     }
 
     private initializeRoutes(){
-        this.router.get(`${this.path}/all`, this.getAllWarehouses);
+        this.router.get(`${this.path}/all/:id`, this.getAllWarehouses);
         this.router.post(`${this.path}`, this.addWarehouse)
         this.router.get(`${this.path}/id`, this.getWarehouse);
         this.router.get(`${this.path}/name`, this.getWarehouseByName);
         this.router.patch(`${this.path}`, this.updateWarehouse);
+        this.router.patch(`${this.path}/incoming-shipment/:id`, this.addIncomingShipment)
         this.router.delete(`${this.path}`, this.deleteWarehouse);
        }
 
-       private async getAllWarehouses(req:RequestType<string>, res: Response, next:NextFunction){
-        const warehouse_query:WarehouseInterface[] = await getAllWarehouses(req.body.payload);
+       private async getAllWarehouses(req:Request, res: Response, next:NextFunction){
+        const warehouse_query:WarehouseInterface[] = await getAllWarehouses(req.params.id);
 
         const response:ResponseType<WarehouseInterface[]>  =
         {
@@ -71,6 +72,21 @@ class WarehouseController implements Controller{
         {
             success:true, 
             message:"Warehouse created successfully",
+            data: warehouse_mutation
+        } 
+
+        res.status(200).json(response)
+        
+    }
+
+    private async addIncomingShipment(req: RequestType<WarehouseAssignInterface>, res: Response, next:NextFunction){
+        const warehouse_mutation:boolean = await addIncomingShipment(req.body.payload.shipment_id, req.params.id)
+
+
+        const response:ResponseType<WarehouseInterface>  =
+        {
+            success:true, 
+            message:"Incoming shipment added successfully",
             data: warehouse_mutation
         } 
 

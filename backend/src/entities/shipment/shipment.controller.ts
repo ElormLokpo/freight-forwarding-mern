@@ -16,7 +16,7 @@ class ShipmentController implements Controller{
     }
 
     private initializeRoutes(){
-        this.router.get(`${this.path}/all`, this.getAllShipments);
+        this.router.get(`${this.path}/freight/all/:id`, this.getAllShipments);
         this.router.post(`${this.path}`, this.addShipment)
         this.router.get(`${this.path}/id`, this.getShipment);
         this.router.get(`${this.path}/name`, this.getShipmentByName);
@@ -25,7 +25,7 @@ class ShipmentController implements Controller{
        }
 
        private async getAllShipments(req:RequestType<string>, res: Response, next:NextFunction){
-        const Shipment_query:ShipmentInterface[] = await getAllShipments(req.body.payload);
+        const Shipment_query:ShipmentInterface[] = await getAllShipments(req.params.id);
 
         const response:ResponseType<ShipmentInterface[]>  =
         {

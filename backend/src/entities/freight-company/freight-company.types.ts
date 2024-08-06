@@ -11,13 +11,14 @@ export interface FreightCompanyInterface extends Document{
     }
     email?:string 
     phone?:string
-    urls?:string[]
-    owner?:string
+    urls?:string
+    owner?:any
     warehouses?: WarehouseInterface[],
-    current_shipment?: any[]
+    current_shipment?: any[],
+    vehicles?: any[]
 }
 
 export interface UpdateFreightCompanyRequestType{
-    id: string, 
+   
     data: FreightCompanyInterface
 }

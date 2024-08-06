@@ -17,6 +17,10 @@ import { Route as CoCompanyInitialRouteImport } from './routes/co/company-initia
 import { Route as CoAuthLayoutCoSignupRouteImport } from './routes/_coAuthLayout/co/signup/route'
 import { Route as CoAuthLayoutCoSigninRouteImport } from './routes/_coAuthLayout/co/signin/route'
 import { Route as CoLayoutDashboardsCoWarehousesRouteImport } from './routes/_coLayout/dashboards/co/warehouses/route'
+import { Route as CoLayoutDashboardsCoWarehouseStaffRouteImport } from './routes/_coLayout/dashboards/co/warehouse-staff/route'
+import { Route as CoLayoutDashboardsCoVehicleRouteImport } from './routes/_coLayout/dashboards/co/vehicle/route'
+import { Route as CoLayoutDashboardsCoShipmentRouteImport } from './routes/_coLayout/dashboards/co/shipment/route'
+import { Route as CoLayoutDashboardsCoPlannerWarehousePlannerRouteImport } from './routes/_coLayout/dashboards/co/planner/warehouse-planner/route'
 
 // Create/Update Routes
 
@@ -48,6 +52,30 @@ const CoAuthLayoutCoSigninRouteRoute = CoAuthLayoutCoSigninRouteImport.update({
 const CoLayoutDashboardsCoWarehousesRouteRoute =
   CoLayoutDashboardsCoWarehousesRouteImport.update({
     path: '/dashboards/co/warehouses',
+    getParentRoute: () => CoLayoutRoute,
+  } as any)
+
+const CoLayoutDashboardsCoWarehouseStaffRouteRoute =
+  CoLayoutDashboardsCoWarehouseStaffRouteImport.update({
+    path: '/dashboards/co/warehouse-staff',
+    getParentRoute: () => CoLayoutRoute,
+  } as any)
+
+const CoLayoutDashboardsCoVehicleRouteRoute =
+  CoLayoutDashboardsCoVehicleRouteImport.update({
+    path: '/dashboards/co/vehicle',
+    getParentRoute: () => CoLayoutRoute,
+  } as any)
+
+const CoLayoutDashboardsCoShipmentRouteRoute =
+  CoLayoutDashboardsCoShipmentRouteImport.update({
+    path: '/dashboards/co/shipment',
+    getParentRoute: () => CoLayoutRoute,
+  } as any)
+
+const CoLayoutDashboardsCoPlannerWarehousePlannerRouteRoute =
+  CoLayoutDashboardsCoPlannerWarehousePlannerRouteImport.update({
+    path: '/dashboards/co/planner/warehouse-planner',
     getParentRoute: () => CoLayoutRoute,
   } as any)
 
@@ -90,11 +118,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CoAuthLayoutCoSignupRouteImport
       parentRoute: typeof CoAuthLayoutImport
     }
+    '/_coLayout/dashboards/co/shipment': {
+      id: '/_coLayout/dashboards/co/shipment'
+      path: '/dashboards/co/shipment'
+      fullPath: '/dashboards/co/shipment'
+      preLoaderRoute: typeof CoLayoutDashboardsCoShipmentRouteImport
+      parentRoute: typeof CoLayoutImport
+    }
+    '/_coLayout/dashboards/co/vehicle': {
+      id: '/_coLayout/dashboards/co/vehicle'
+      path: '/dashboards/co/vehicle'
+      fullPath: '/dashboards/co/vehicle'
+      preLoaderRoute: typeof CoLayoutDashboardsCoVehicleRouteImport
+      parentRoute: typeof CoLayoutImport
+    }
+    '/_coLayout/dashboards/co/warehouse-staff': {
+      id: '/_coLayout/dashboards/co/warehouse-staff'
+      path: '/dashboards/co/warehouse-staff'
+      fullPath: '/dashboards/co/warehouse-staff'
+      preLoaderRoute: typeof CoLayoutDashboardsCoWarehouseStaffRouteImport
+      parentRoute: typeof CoLayoutImport
+    }
     '/_coLayout/dashboards/co/warehouses': {
       id: '/_coLayout/dashboards/co/warehouses'
       path: '/dashboards/co/warehouses'
       fullPath: '/dashboards/co/warehouses'
       preLoaderRoute: typeof CoLayoutDashboardsCoWarehousesRouteImport
+      parentRoute: typeof CoLayoutImport
+    }
+    '/_coLayout/dashboards/co/planner/warehouse-planner': {
+      id: '/_coLayout/dashboards/co/planner/warehouse-planner'
+      path: '/dashboards/co/planner/warehouse-planner'
+      fullPath: '/dashboards/co/planner/warehouse-planner'
+      preLoaderRoute: typeof CoLayoutDashboardsCoPlannerWarehousePlannerRouteImport
       parentRoute: typeof CoLayoutImport
     }
   }
@@ -108,7 +164,11 @@ export const routeTree = rootRoute.addChildren({
     CoAuthLayoutCoSignupRouteRoute,
   }),
   CoLayoutRoute: CoLayoutRoute.addChildren({
+    CoLayoutDashboardsCoShipmentRouteRoute,
+    CoLayoutDashboardsCoVehicleRouteRoute,
+    CoLayoutDashboardsCoWarehouseStaffRouteRoute,
     CoLayoutDashboardsCoWarehousesRouteRoute,
+    CoLayoutDashboardsCoPlannerWarehousePlannerRouteRoute,
   }),
   CoCompanyInitialRouteRoute,
 })
@@ -136,7 +196,11 @@ export const routeTree = rootRoute.addChildren({
     "/_coLayout": {
       "filePath": "_coLayout.tsx",
       "children": [
-        "/_coLayout/dashboards/co/warehouses"
+        "/_coLayout/dashboards/co/shipment",
+        "/_coLayout/dashboards/co/vehicle",
+        "/_coLayout/dashboards/co/warehouse-staff",
+        "/_coLayout/dashboards/co/warehouses",
+        "/_coLayout/dashboards/co/planner/warehouse-planner"
       ]
     },
     "/co/company-initial": {
@@ -150,8 +214,24 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_coAuthLayout/co/signup/route.tsx",
       "parent": "/_coAuthLayout"
     },
+    "/_coLayout/dashboards/co/shipment": {
+      "filePath": "_coLayout/dashboards/co/shipment/route.tsx",
+      "parent": "/_coLayout"
+    },
+    "/_coLayout/dashboards/co/vehicle": {
+      "filePath": "_coLayout/dashboards/co/vehicle/route.tsx",
+      "parent": "/_coLayout"
+    },
+    "/_coLayout/dashboards/co/warehouse-staff": {
+      "filePath": "_coLayout/dashboards/co/warehouse-staff/route.tsx",
+      "parent": "/_coLayout"
+    },
     "/_coLayout/dashboards/co/warehouses": {
       "filePath": "_coLayout/dashboards/co/warehouses/route.tsx",
+      "parent": "/_coLayout"
+    },
+    "/_coLayout/dashboards/co/planner/warehouse-planner": {
+      "filePath": "_coLayout/dashboards/co/planner/warehouse-planner/route.tsx",
       "parent": "/_coLayout"
     }
   }

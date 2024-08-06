@@ -88,3 +88,17 @@ export const addFreightCompany = async (company: FreightCompanyInterface)=>{
     
     return freight_company;
 }
+
+export const isFreightCompanyOwner = async (ownerid:string, freight_company_id:string)=>{
+    const freight_company = await FreightCompanyModel.findById(freight_company_id).populate({
+        path:"owner",
+        select:"_id"
+    }) as FreightCompanyInterface;
+
+    if (freight_company.owner?._id == ownerid ){
+        return true
+    }
+
+    return false;
+
+}

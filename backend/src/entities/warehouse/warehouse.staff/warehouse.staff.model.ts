@@ -5,8 +5,7 @@ import bcrypt from "bcrypt";
 
 const WarehouseStaffSchema = new mongoose.Schema({
     _id:{
-        type:String, 
-        
+        type:String,   
     },
     warehouse_id:{
         type:String, 
@@ -16,6 +15,10 @@ const WarehouseStaffSchema = new mongoose.Schema({
         type:Number,
         
     }, 
+    freight_company_id:{
+        type:String, 
+        ref: "FreightCompanyModel"
+    },
     fullname: {
         type:String,
         required: true
@@ -23,12 +26,7 @@ const WarehouseStaffSchema = new mongoose.Schema({
     phone: {
         type:String,
        
-    },  
-    email:{
-        type:String,
-       
-    },  
-   
+    },   
     role: {
         type:String,
        

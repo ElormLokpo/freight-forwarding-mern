@@ -5,6 +5,9 @@ import { SignInSchemaType, SignUpSchemaType } from "@/lib/schema"
 import { AuthRequestDataType, AuthResponseDataType, GetUserRequstType } from "./types"
 import { storeCurrentUser, storeToken } from "@/services/redux"
 import { UserInterface } from "@/services/redux/slices/auth/co/types"
+import { freightCompanyApi } from "../freight-company"
+import { storeAllFreightCompanies, storeCurrentFreightCompany } from "@/services/redux/slices/freight-company"
+import { FreightCompanyInterface } from "@/services/redux/slices/freight-company/types"
 
 export const userApi = createApi({
     reducerPath : "userApi",
@@ -33,14 +36,14 @@ export const authApi = createApi({
 
                 if (response.data){
                     const {data:payload} = response.data as ResponseType<AuthResponseDataType>
-                    dispatch(storeToken(payload))
+                    await dispatch(storeToken(payload))
 
                     const user_response =  await dispatch(userApi.endpoints.getUser.initiate(payload.id)).unwrap();
                     
                     if (user_response.data){
                         const {data: currentUser} = user_response as ResponseType<UserInterface>;
                        
-                        dispatch(storeCurrentUser(currentUser));
+                        await dispatch(storeCurrentUser(currentUser));
                         
                     }
                  
@@ -49,28 +52,50 @@ export const authApi = createApi({
                 return response.data as {data: ResponseType<AuthResponseDataType>}
             }
         }),
-        signin:builder.mutation<ResponseType<AuthResponseDataType>, AuthRequestDataType<SignInSchemaType>>({
+        signin:builder.mutation<Boolean, AuthRequestDataType<SignInSchemaType>>({
             queryFn: async (args, {dispatch}, _extraOptions, baseQuery)=>{
-                const response = await baseQuery({
+                const response:any = await baseQuery({
                     url:"auth/login", 
                     method: "POST",
                     body: args
                 });
 
                 if (response.data){
-                    const {data:payload} = response.data as ResponseType<AuthResponseDataType>;
-                    dispatch(storeToken(payload)); 
+                  
+                    if(response.data.success==true){
+                        const {data:payload} = response.data as ResponseType<AuthResponseDataType>;
+                       
+                        await dispatch(storeToken(payload)); 
 
-                    const user_response = await dispatch(userApi.endpoints.getUser.initiate(payload.id));
+                        const user_response = await dispatch(userApi.endpoints.getUser.initiate(payload.id));
+                        const freight_companies = await dispatch(freightCompanyApi.endpoints.getFreightCompaniesByOnwer.initiate(payload.id));
+                        
+                       
 
-                    if (user_response.data){
-                          const {data: currentUser} = user_response.data as ResponseType<UserInterface>;
-                          dispatch(storeCurrentUser(currentUser));
+                        if (Array.isArray(freight_companies.data)){
+                            await dispatch(storeAllFreightCompanies(freight_companies.data))
+                            await dispatch(storeCurrentFreightCompany(freight_companies.data[0]))
+                        }
+                       
+
+                        if (user_response.data){
+                                const {data: currentUser} = user_response.data as ResponseType<UserInterface>;
+                                dispatch(storeCurrentUser(currentUser));
+
+                                return {data:true};
+                        }
                     }
+
+                    if(response.data.success == false){
+                        return {data:false}
+                        
+                    }
+
+                   
                   
                 }
 
-                return response.data as {data: ResponseType<AuthResponseDataType>}
+                return {data:false}
             }
         })
     })

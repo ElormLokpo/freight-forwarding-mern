@@ -1,3 +1,4 @@
+import { isAuthenticatedMiddleware } from "../../middleware/authorization";
 import Controller from "../../interfaces/controllers.interface";
 import {Router, Request, Response, NextFunction} from "express";
 
@@ -12,7 +13,7 @@ class PingController implements Controller{
     }
 
     initializeRoute(){
-        this.router.get(`${this.path}`, this.ping)
+        this.router.get(`${this.path}`, isAuthenticatedMiddleware, this.ping)
     }
     
 

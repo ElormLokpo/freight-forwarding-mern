@@ -3,7 +3,6 @@ import {Router, Request, Response, NextFunction} from "express";
 import { addUser, findAllUsers, findUserByEmail, findUserById } from "./users.services";
 
 import { UserModel } from "./users.model";
-import UserNotFoundException from "../../exceptions/user/user.not.found.exception";
 import {UpdateUserPayload, UserInterface } from "./users.types";
 import { RequestType, ResponseType } from "../../types";
 
@@ -44,7 +43,7 @@ class UsersController implements Controller{
         const user_query:UserInterface = await findUserByEmail(req.body.payload);
         
         if (!user_query){
-            next(new UserNotFoundException(req.body.payload))
+            next()
         }
 
         const response:ResponseType<UserInterface> = {
@@ -61,7 +60,7 @@ class UsersController implements Controller{
         const user_query:UserInterface = await findUserById(req.params.id);
 
         if(!user_query){
-            next(new UserNotFoundException(req.params.id))
+            next()
         }
         
         const response:ResponseType<UserInterface[]> = {
@@ -93,7 +92,7 @@ class UsersController implements Controller{
         const user_query:UserInterface = await findUserById(req.body.payload.id);
         
         if(!user_query){
-            next(new UserNotFoundException(req.body.payload.id))
+            next()
         }
        
         const updated_user = await UserModel.findByIdAndUpdate(user_query._id, req.body.payload.body, {new:true})
@@ -113,7 +112,7 @@ class UsersController implements Controller{
         const user_query:UserInterface = await findUserById(req.body.payload);
         
         if(!user_query){
-            next(new UserNotFoundException(req.body.payload))
+            next()
         }
 
         const updated_user = await UserModel.findByIdAndDelete(user_query._id ,req.body)

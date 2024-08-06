@@ -7,24 +7,19 @@ const WeightHeightSchema = new mongoose.Schema({
     heightValue: {type:Number}
 },{_id:false})
 
-
+const DriverSchema = new mongoose.Schema({
+    fullname:String, 
+    license_number: String
+},{_id:false})
 
 const VehicleSchema = new mongoose.Schema({
     _id:{type:String},
     name: {type:String},
     number_plate:{type:String},
     tracking_number:{type:Number},
-    warehouse:{
-        type:String, 
-        ref:"WarehouseModel"
-    },
-    
     max_capacity: WeightHeightSchema,
     is_full: {type:Boolean},
-    driver:{
-        type:String, 
-        ref: "WarehouseStaffModel"
-    },
+    driver: DriverSchema,
     shipment:[{
         type:String, 
         ref:"ShipmentModel"
@@ -33,7 +28,14 @@ const VehicleSchema = new mongoose.Schema({
         type:String, 
         ref:"FreightCompanyModel"
     },
-    
+    current_warehouse:{
+        type:String, 
+        ref:"WarehouseModel"
+    },
+    in_transit:{
+        type: Boolean, 
+        default: false
+    }
 
 }, {timestamps:true})
 
@@ -53,6 +55,7 @@ VehicleSchema.virtual("dropoffs",{
     localField:"_id",
     foreignField: "vehicle"
 })
+
 
 
 

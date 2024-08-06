@@ -18,6 +18,20 @@ const WarehouseSchema = new mongoose.Schema({
         type:String,
         ref: "UserModel"
     },
+    incoming_shipment:{
+        type:[{
+        type:String, 
+        ref: "ShipmentModel"
+        }],
+        default: []
+    },
+    current_shipment:{
+        type:[{
+        type:String, 
+        ref: "ShipmentModel"
+        }],
+        default: []
+    },
     freight_company_id:{
         type: String,
         ref: "FreightCompanyModel"
@@ -38,11 +52,13 @@ WarehouseSchema.virtual("warehouse_staff",{
     justOne:false
 })
 
-WarehouseSchema.virtual("current_shipment",{
-    ref:"ShipmentModel",
+
+
+WarehouseSchema.virtual("current_vehicles",{
+    ref:"VehicleModel",
     localField:"_id",
-    foreignField:"current_warehouse",
-    justOne:false
+    foreignField:"current_warehouse", 
+    justOne: false
 })
 
 WarehouseSchema.set("toJSON",{virtuals:true});
