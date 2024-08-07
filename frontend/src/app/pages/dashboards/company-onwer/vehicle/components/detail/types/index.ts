@@ -1,4 +1,3 @@
 export interface IProps{
-    row?:any,
-   
+    row: any
 }

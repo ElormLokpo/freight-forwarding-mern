@@ -5,6 +5,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 import DelEditComponent from "@/app/components/del-edit";
 import { VehicleResponseType } from "@/services/api/vehicle/types";
 import { ShipmentResponseType } from "@/services/api/shipment/types";
+import { DetailModalContext } from "@/context";
 
 const CoShipmentTable: React.FC<IProps> = (props) => {
   const columnHelper = createColumnHelper<ShipmentResponseType>();
@@ -58,9 +59,9 @@ const CoShipmentTable: React.FC<IProps> = (props) => {
   ];
 
   return (
-    <>
+    <DetailModalContext.Provider value="shipment">
       <TableComponent data={props.data} columns={columns} />
-    </>
+    </DetailModalContext.Provider>
   );
 };
 

@@ -6,17 +6,16 @@ import {
   TableRow,
   TableHead,
   TableBody,
-  TableCell,
+  
 } from "@/components/ui/table";
 import { IProps } from "./types";
-import ActionDropDown from "@/app/pages/dashboards/company-onwer/warehouses/components/action-dropdown";
 import {
   flexRender, 
   useReactTable, 
   getCoreRowModel
 } from "@tanstack/react-table"
 
-import {TableCell as TableCellComp} from "./components/table-cell"
+
 import { TableRow as TableRowComp } from "./components/table-row";
 
 const TableComponent = <T,>(props: IProps<T>) => {
@@ -60,10 +59,7 @@ const TableComponent = <T,>(props: IProps<T>) => {
           
         </TableHeader>
         <TableBody>
-          
             <TableRowComp table={table}/>
-          
-         
         </TableBody>
       </Table>
     </div>
