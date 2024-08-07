@@ -4,6 +4,7 @@ import TableComponent from "@/app/components/table";
 import { createColumnHelper } from "@tanstack/react-table";
 import DelEditComponent from "@/app/components/del-edit";
 import { WarehouseStaffResponseType } from "@/services/api/warehouse-staff/types";
+import { DetailModalContext } from "@/context";
 
 const CoWarehouseTable: React.FC<IProps> = (props) => {
   const columnHelper = createColumnHelper<WarehouseStaffResponseType>();
@@ -47,9 +48,9 @@ const CoWarehouseTable: React.FC<IProps> = (props) => {
   ];
 
   return (
-    <>
+    <DetailModalContext.Provider value="warehouse-staff">
       <TableComponent data={props.data} columns={columns} />
-    </>
+    </DetailModalContext.Provider>
   );
 };
 

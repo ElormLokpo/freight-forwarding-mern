@@ -4,6 +4,7 @@ import TableComponent from "@/app/components/table";
 import { createColumnHelper } from "@tanstack/react-table";
 import DelEditComponent from "@/app/components/del-edit";
 import { VehicleResponseType } from "@/services/api/vehicle/types";
+import { DetailModalContext } from "@/context";
 
 const CoVehicleTable: React.FC<IProps> = (props) => {
   const columnHelper = createColumnHelper<VehicleResponseType>();
@@ -63,9 +64,9 @@ const CoVehicleTable: React.FC<IProps> = (props) => {
   ];
 
   return (
-    <>
+    <DetailModalContext.Provider value="vehicle">
       <TableComponent data={props.data} columns={columns} />
-    </>
+    </DetailModalContext.Provider>
   );
 };
 
